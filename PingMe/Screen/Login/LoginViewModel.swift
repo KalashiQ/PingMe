@@ -32,16 +32,11 @@ class LoginViewModel {
     }
     
     func validatePassword() {
-//        let passwordRegex = "(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*]).{8,}"
-//        let passwordPredicate = NSPredicate(format: "SELF MATCHES %@", passwordRegex)
-//        isValidPassword = passwordPredicate.evaluate(with: password)
         if password.count >= 8 {
              isValidPassword = true
         } else {
             isValidPassword = false
         }
     }
-    
-    
 }
 

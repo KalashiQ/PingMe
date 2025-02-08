@@ -1,39 +1,21 @@
 import SwiftUI
 
 struct VerificationView: View {
-    let email: String
+    @State private var viewModel: VerificationViewModel
     @Environment(\.dismiss) private var dismiss
-    @State private var verificationCode: [String] = Array(repeating: "", count: 6)
-    @State private var timeRemaining = 300
-    @State private var timer: Timer?
-    @State private var canResendCode = false
-    
     @Binding var contentOpacity: Double
     @Binding var backgroundHeight: CGFloat
     @Binding var backgroundWidth: CGFloat
     @Binding var isAnimating: Bool
-    
-
     @FocusState private var focusedField: Int?
     
-    func startTimer() {
-        canResendCode = false
-        timeRemaining = 300
-        timer?.invalidate()
-        timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if timeRemaining > 0 {
-                timeRemaining -= 1
-            } else {
-                canResendCode = true
-                timer?.invalidate()
-            }
-        }
-    }
-    
-    var formattedTime: String {
-        let minutes = timeRemaining / 60
-        let seconds = timeRemaining % 60
-        return String(format: "%d:%02d", minutes, seconds)
+    init(email: String, contentOpacity: Binding<Double>, backgroundHeight: Binding<CGFloat>, 
+         backgroundWidth: Binding<CGFloat>, isAnimating: Binding<Bool>) {
+        _viewModel = State(initialValue: VerificationViewModel(email: email))
+        _contentOpacity = contentOpacity
+        _backgroundHeight = backgroundHeight
+        _backgroundWidth = backgroundWidth
+        _isAnimating = isAnimating
     }
     
     var body: some View {
@@ -66,14 +48,14 @@ struct VerificationView: View {
                     .lineSpacing(62.93)
                     .padding(.leading, 21)
                 
-                Text("Код отправлен на \(email)")
+                Text("Код отправлен на \(viewModel.email)")
                     .foregroundColor(.gray)
                     .padding(.leading, 21)
                     .padding(.top, 8)
                 
                 HStack(spacing: 12) {
                     ForEach(0..<6) { index in
-                        TextField("", text: $verificationCode[index])
+                        TextField("", text: $viewModel.verificationCode[index])
                             .frame(width: 45, height: 45)
                             .background(Color(hex: "#CADDAD"))
                             .cornerRadius(8)
@@ -81,32 +63,18 @@ struct VerificationView: View {
                             .multilineTextAlignment(.center)
                             .keyboardType(.numberPad)
                             .focused($focusedField, equals: index)
-                            .onChange(of: verificationCode[index]) { oldValue, newValue in
-                                if newValue.count > 1 {
-                                    verificationCode[index] = String(newValue.prefix(1))
-                                }
-                                if !newValue.isEmpty && !newValue.allSatisfy({ $0.isNumber }) {
-                                    verificationCode[index] = ""
-                                }
-                                
-                                if !newValue.isEmpty && index < 5 {
-                                    focusedField = index + 1
-                                }
-                                
-                                if newValue.isEmpty && index > 0 {
-                                    focusedField = index - 1
+                            .onChange(of: viewModel.verificationCode[index]) { oldValue, newValue in
+                                if let nextField = viewModel.handleCodeInput(at: index, newValue: newValue) {
+                                    focusedField = nextField
                                 }
                             }
                     }
-                    
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 32)
                 .padding(.horizontal, 21)
                 
-                Button(action: {
-                    // Действие при подтверждении кода
-                }) {
+                Button(action: viewModel.verifyCode) {
                     Text("Подтвердить")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
@@ -117,39 +85,33 @@ struct VerificationView: View {
                 .padding(.horizontal, 21)
                 .padding(.top, 32)
                 
-                Button(action: {
-                    if canResendCode {
-                        startTimer()
-                    }
-                }) {
-                    Text(canResendCode ? "Отправить код повторно" : "Отправить повторно через \(formattedTime)")
-                        .foregroundColor(canResendCode ? .black : .gray)
+                Button(action: viewModel.resendCode) {
+                    Text(viewModel.canResendCode ? "Отправить код повторно" : "Отправить повторно через \(viewModel.formattedTime)")
+                        .foregroundColor(viewModel.canResendCode ? .black : .gray)
                 }
                 .frame(maxWidth: .infinity)
                 .padding(.top, 16)
-                .disabled(!canResendCode)
+                .disabled(!viewModel.canResendCode)
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(hex: "#CADDAD"))
         }
         .onAppear {
-            startTimer()
+            viewModel.startTimer()
         }
         .onDisappear {
-            timer?.invalidate()
+            viewModel.onDisappear()
         }
     }
 }
 
-struct VerificationView_Previews: PreviewProvider {
-    static var previews: some View {
+#Preview {
         VerificationView(
-            email: "test@example.com",
+            email: "",
             contentOpacity: .constant(0),
             backgroundHeight: .constant(UIScreen.main.bounds.height),
             backgroundWidth: .constant(UIScreen.main.bounds.width),
             isAnimating: .constant(true)
         )
-    }
 }
 

@@ -2,15 +2,6 @@ import SwiftUI
 
 struct RegistrationView: View {
     @Environment(\.dismiss) private var dismiss
-    
-    @State private var email: String = ""
-    @State private var password: String = ""
-    @State private var confirmPassword: String = ""
-    @State private var username: String = ""
-    @State private var showVerification: Bool = false
-    @State private var isValidEmail: Bool = true
-    @State private var isValidPasswordMatch: Bool = true
-    
     @Binding var contentOpacity: Double
     @Binding var backgroundHeight: CGFloat
     @Binding var backgroundWidth: CGFloat
@@ -34,17 +25,17 @@ struct RegistrationView: View {
                             
                             VStack(alignment: .center, spacing: 14) {
                                 VStack(alignment: .leading, spacing: 0) {
-                                    Text("имя:")
+                                    Text("username:")
                                         .font(.custom("Inter", size: 21))
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
                                         .padding(.horizontal, 8)
-                                        .frame(width: 75, height: 23)
+                                        .frame(width: 118, height: 23)
                                         .background(Color(hex: "#CADDAD"))
                                         .zIndex(1)
                                         .offset(x: 16, y: 10)
                                     
-                                    TextField("", text: $username)
+                                    TextField("", text: $viewModel.username)
                                         .padding()
                                         .frame(width: 322, height: 60)
                                         .background(Color(hex: "#CADDAD"))
@@ -127,7 +118,7 @@ struct RegistrationView: View {
                                 Button(action: {
                                     if viewModel.isValidForm() {
                                         withAnimation(.spring()) {
-                                            showVerification = true
+                                            viewModel.showVerification = true
                                         }
                                     }
                                 }) {
@@ -175,7 +166,7 @@ struct RegistrationView: View {
                     .frame(maxWidth: .infinity, minHeight: UIScreen.main.bounds.height, alignment: .top)
                 }
             }
-            .navigationDestination(isPresented: $showVerification) {
+            .navigationDestination(isPresented: $viewModel.showVerification) {
                 VerificationView(email: viewModel.email,
                                  contentOpacity: .constant(0),
                                  backgroundHeight: .constant(UIScreen.main.bounds.height),
@@ -187,14 +178,11 @@ struct RegistrationView: View {
     }
 }
 
-struct RegistrationView_Previews: PreviewProvider {
-    static var previews: some View {
-            RegistrationView(
-                contentOpacity: .constant(0),
-                backgroundHeight: .constant(UIScreen.main.bounds.height),
-                backgroundWidth: .constant(UIScreen.main.bounds.width),
-                isAnimating: .constant(true)
-            )
-    }
+#Preview {
+    RegistrationView(contentOpacity: .constant(0),
+              backgroundHeight: .constant(UIScreen.main.bounds.height),
+              backgroundWidth: .constant(UIScreen.main.bounds.width),
+              isAnimating: .constant(true)
+    )
 }
 

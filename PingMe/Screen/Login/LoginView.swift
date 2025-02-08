@@ -1,7 +1,6 @@
 import SwiftUI
 
 struct LoginView: View {
-    
     @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123")
     
     var body: some View {
@@ -151,6 +150,8 @@ struct LoginView: View {
         }
     }
     
+    
+// MARK: - Functions for Animation
     private func startTransitionAnimation(for login: Bool) {
         if login {
             viewModel.isAnimatingLogin = true
@@ -180,9 +181,7 @@ struct LoginView: View {
     
 }
 
-struct LoginView_Previews: PreviewProvider {
-    static var previews: some View {
-        LoginView()
-    }
+#Preview {
+    LoginView()
 }
 
