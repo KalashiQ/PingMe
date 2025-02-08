@@ -1,28 +1,14 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var email: String = ""
-    @State private var isValidEmail: Bool = true
-    @State private var password: String = ""
-    @State private var isValidPassword: Bool = true
-    @State private var showVerification: Bool = false
-    @State private var showRegistration: Bool = false
-    @State private var showGoogleAlert: Bool = false
-    
     
     @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123")
     
-    @State private var backgroundHeight: CGFloat = 745
-    @State private var backgroundWidth: CGFloat = 400
-    @State private var contentOpacity: Double = 1
-    @State private var isAnimatingLogin: Bool = false
-    @State private var isAnimatingRegistration: Bool = false
-    
     var body: some View {
         ZStack {
-            BackgroundView(height: backgroundHeight, width: backgroundWidth)
-                .animation(.easeInOut(duration: 1.1), value: backgroundHeight)
-                .animation(.easeInOut(duration: 1.1), value: backgroundWidth)
+            BackgroundView(height: viewModel.backgroundHeight, width: viewModel.backgroundWidth)
+                .animation(.easeInOut(duration: 1.1), value: viewModel.backgroundHeight)
+                .animation(.easeInOut(duration: 1.1), value: viewModel.backgroundWidth)
             
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -98,7 +84,7 @@ struct LoginView: View {
                     }
                     
                     Button(action: {
-                        showGoogleAlert = true
+                        viewModel.showGoogleAlert = true
                     }) {
                         HStack {
                             Text("Вход через Google")
@@ -114,7 +100,7 @@ struct LoginView: View {
                         .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.white, lineWidth: 1))
                         .frame(maxWidth: .infinity, alignment: .center)
                     }
-                    .alert("В разработке", isPresented: $showGoogleAlert) {
+                    .alert("В разработке", isPresented: $viewModel.showGoogleAlert) {
                         Button("OK", role: .cancel) { }
                     } message: {
                         Text("Функция входа через Google находится в разработке")
@@ -138,44 +124,44 @@ struct LoginView: View {
                 
             }
             .frame(width: 400, height: 745, alignment: .top)
-            .opacity(contentOpacity)
+            .opacity(viewModel.contentOpacity)
         }
         .padding(.top, 153)
         .overlay {
-            if isAnimatingLogin {
+            if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
-                    contentOpacity: $contentOpacity,
-                    backgroundHeight: $backgroundHeight,
-                    backgroundWidth: $backgroundWidth,
-                    isAnimating: $isAnimatingLogin
+                    contentOpacity: $viewModel.contentOpacity,
+                    backgroundHeight: $viewModel.backgroundHeight,
+                    backgroundWidth: $viewModel.backgroundWidth,
+                    isAnimating: $viewModel.isAnimatingLogin
                 )
-                .opacity(1 - contentOpacity)
+                .opacity(1 - viewModel.contentOpacity)
             }
             
-            if isAnimatingRegistration {
+            if viewModel.isAnimatingRegistration {
                 RegistrationView(
-                    contentOpacity: $contentOpacity,
-                    backgroundHeight: $backgroundHeight,
-                    backgroundWidth: $backgroundWidth,
-                    isAnimating: $isAnimatingRegistration
+                    contentOpacity: $viewModel.contentOpacity,
+                    backgroundHeight: $viewModel.backgroundHeight,
+                    backgroundWidth: $viewModel.backgroundWidth,
+                    isAnimating: $viewModel.isAnimatingRegistration
                 )
-                .opacity(1 - contentOpacity)
+                .opacity(1 - viewModel.contentOpacity)
             }
         }
     }
     
     private func startTransitionAnimation(for login: Bool) {
         if login {
-            isAnimatingLogin = true
+            viewModel.isAnimatingLogin = true
         } else {
-            isAnimatingRegistration = true
+            viewModel.isAnimatingRegistration = true
         }
 
         withAnimation(.easeInOut(duration: 1.1)) {
-            backgroundHeight = UIScreen.main.bounds.height + 200
-            backgroundWidth = UIScreen.main.bounds.width
-            contentOpacity = 0
+            viewModel.backgroundHeight = UIScreen.main.bounds.height + 200
+            viewModel.backgroundWidth = UIScreen.main.bounds.width
+            viewModel.contentOpacity = 0
         }
     }
         
