@@ -4,7 +4,7 @@ import SwiftUI
 struct PingMeApp: App {
     var body: some Scene {
         WindowGroup {
-            SplashView()
+            ChatsView()
         }
     }
 }

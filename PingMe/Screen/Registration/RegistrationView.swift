@@ -25,12 +25,12 @@ struct RegistrationView: View {
                             
                             VStack(alignment: .center, spacing: 14) {
                                 VStack(alignment: .leading, spacing: 0) {
-                                    Text("username:")
+                                    Text("ваше имя:")
                                         .font(.custom("Inter", size: 21))
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
                                         .padding(.horizontal, 8)
-                                        .frame(width: 118, height: 23)
+                                        .frame(width: 123, height: 23)
                                         .background(Color(hex: "#CADDAD"))
                                         .zIndex(1)
                                         .offset(x: 16, y: 10)
