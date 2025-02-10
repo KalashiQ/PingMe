@@ -8,6 +8,8 @@ struct VerificationView: View {
     @Binding var backgroundWidth: CGFloat
     @Binding var isAnimating: Bool
     @FocusState private var focusedField: Int?
+    @State private var navigateToChats = false
+    @Environment(\.presentationMode) var presentationMode
     
     init(email: String, contentOpacity: Binding<Double>, backgroundHeight: Binding<CGFloat>, 
          backgroundWidth: Binding<CGFloat>, isAnimating: Binding<Bool>) {
@@ -75,7 +77,13 @@ struct VerificationView: View {
                 .padding(.horizontal, 21)
                 
                 Button(action: {
-                    ChatsView()
+                    presentationMode.wrappedValue.dismiss()
+                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
+                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                           let window = windowScene.windows.first {
+                            window.rootViewController = UIHostingController(rootView: ChatsView())
+                        }
+                    }
                 }) {
                     Text("Подтвердить")
                         .foregroundColor(.white)
