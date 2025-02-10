@@ -36,11 +36,14 @@ struct RegistrationView: View {
                                         .offset(x: 16, y: 10)
                                     
                                     TextField("", text: $viewModel.username)
+                                        .onChange(of: viewModel.username) { _, _ in
+                                            viewModel.validateUsername()
+                                        }
                                         .padding()
                                         .frame(width: 322, height: 60)
                                         .background(Color(hex: "#CADDAD"))
                                         .cornerRadius(8)
-                                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.black, lineWidth: 1))
+                                        .overlay(RoundedRectangle(cornerRadius: 8).stroke(viewModel.isValidUsername ? Color.black : Color.red, lineWidth: 1))
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 0) {

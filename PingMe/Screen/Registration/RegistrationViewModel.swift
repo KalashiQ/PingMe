@@ -10,7 +10,8 @@ class RegistrationViewModel {
     var confirmPassword: String
     var isValidPassword: Bool = true
     var isValidPasswordMatch: Bool = true
-    var username: String = ""
+    var username: String = "@Kalashiq"
+    var isValidUsername: Bool = true
     var showVerification: Bool = false
     
     init(email: String = "", password: String = "", confirmPassword: String = "") {
@@ -35,13 +36,19 @@ class RegistrationViewModel {
         }
     }
     
+    func validateUsername() {
+        let usernameRegex = "^@[A-Za-z][A-Za-z0-9]{5,}$"
+        let usernamePredicate = NSPredicate(format: "SELF MATCHES %@", usernameRegex)
+        isValidUsername = usernamePredicate.evaluate(with: username)
+    }
     
     func validatePasswordMatch() {
         isValidPasswordMatch = !password.isEmpty && !confirmPassword.isEmpty && password == confirmPassword
     }
     
     func isValidForm() -> Bool {
-        return isValidEmail && isValidPassword && isValidPasswordMatch && !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty
+        isValidEmail && isValidPassword && isValidPasswordMatch && isValidUsername &&
+        !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty && !username.isEmpty
     }
 }
 

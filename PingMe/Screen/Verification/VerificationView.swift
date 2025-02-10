@@ -74,7 +74,9 @@ struct VerificationView: View {
                 .padding(.top, 32)
                 .padding(.horizontal, 21)
                 
-                Button(action: viewModel.verifyCode) {
+                Button(action: {
+                    ChatsView()
+                }) {
                     Text("Подтвердить")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
