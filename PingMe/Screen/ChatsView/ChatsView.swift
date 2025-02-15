@@ -5,26 +5,36 @@ struct ChatsView: View {
     
     var body: some View {
         NavigationStack {
-            VStack(spacing: 0) {
-                header
-                
-                ScrollView {
-                    VStack(spacing: 0) {
-                        storiesSection
-                        
-                        chatsList
+            ZStack {
+                VStack(spacing: 0) {
+                    header
+                    
+                    ScrollView {
+                        VStack(spacing: 0) {
+                            storiesSection
+                            
+                            chatsList
+                        }
                     }
                 }
-            }
-            .overlay(alignment: .bottomTrailing) {
-                newChatButton
+                .overlay(alignment: .bottomTrailing) {
+                    newChatButton
+                }
+                
+                if viewModel.isSlideBarShowing {
+                    SlideBarView(
+                        isShowing: $viewModel.isSlideBarShowing,
+                        currentUserName: viewModel.currentUserName,
+                        username: viewModel.username
+                    )
+                }
             }
         }
     }
     
     private var header: some View {
         HStack {
-            Button(action: {}) {
+            Button(action: { viewModel.isSlideBarShowing.toggle() }) {
                 Image(systemName: "line.3.horizontal")
                     .font(.title2)
                     .foregroundColor(.black)

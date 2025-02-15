@@ -6,6 +6,9 @@ class ChatsViewModel {
     var chats: [Chat] = []
     var stories: [Story] = []
     var currentUser: Story?
+    var isSlideBarShowing: Bool = false
+    var currentUserName: String = "Имя пользователя"
+    var username: String = "username"
     
     init() {
         setupMockData()
