@@ -128,25 +128,28 @@ struct ChatRowView: View {
     let chat: Chat
     
     var body: some View {
-        HStack(spacing: 12) {
-            Circle()
-                .fill(Color(uiColor: .systemGray5))
-                .frame(width: 50, height: 50)
-            
-            VStack(alignment: .leading, spacing: 4) {
-                Text(chat.username)
-                    .font(.system(size: 16, weight: .semibold))
+        NavigationLink(destination: ChatView(recipientName: chat.username)) {
+            HStack(spacing: 12) {
+                Circle()
+                    .fill(Color(uiColor: .systemGray5))
+                    .frame(width: 50, height: 50)
                 
-                Text(chat.lastMessage)
+                VStack(alignment: .leading, spacing: 4) {
+                    Text(chat.username)
+                        .font(.system(size: 16, weight: .semibold))
+                    
+                    Text(chat.lastMessage)
+                        .font(.system(size: 14))
+                        .foregroundColor(.gray)
+                }
+                
+                Spacer()
+                
+                Text(formatTime(chat.lastMessageTime))
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
             }
-            
-            Spacer()
-            
-            Text(formatTime(chat.lastMessageTime))
-                .font(.system(size: 14))
-                .foregroundColor(.gray)
+            .foregroundColor(.black)
         }
     }
     
