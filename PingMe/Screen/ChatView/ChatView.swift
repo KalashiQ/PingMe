@@ -3,6 +3,7 @@ import SwiftUI
 struct ChatView: View {
     @State private var viewModel: ChatViewModel
     @Environment(\.dismiss) private var dismiss
+    @FocusState private var isInputFocused: Bool
     
     init(recipientName: String) {
         _viewModel = State(initialValue: ChatViewModel(recipientName: recipientName))
@@ -12,7 +13,16 @@ struct ChatView: View {
         VStack(spacing: 0) {
             header
             
-            chatContent
+            ScrollView {
+                chatContent
+            }
+            .scrollDismissesKeyboard(.immediately)
+            .simultaneousGesture(
+                TapGesture()
+                    .onEnded { _ in
+                        isInputFocused = false
+                    }
+            )
             
             messageInputField
         }
@@ -72,14 +82,12 @@ struct ChatView: View {
     }
     
     private var chatContent: some View {
-        ScrollView {
-            LazyVStack(spacing: 12) {
-                ForEach(viewModel.messages) { message in
-                    MessageBubble(message: message)
-                }
+        LazyVStack(spacing: 12) {
+            ForEach(viewModel.messages) { message in
+                MessageBubble(message: message)
             }
-            .padding()
         }
+        .padding()
     }
     
     private var messageInputField: some View {
@@ -93,6 +101,7 @@ struct ChatView: View {
                 .padding(8)
                 .background(Color(uiColor: .systemGray6))
                 .cornerRadius(20)
+                .focused($isInputFocused)
                 .onSubmit {
                     viewModel.sendMessage()
                 }
@@ -108,7 +117,10 @@ struct ChatView: View {
                         .font(.title2)
                 }
             } else {
-                Button(action: { viewModel.sendMessage() }) {
+                Button(action: { 
+                    viewModel.sendMessage()
+                    isInputFocused = false
+                }) {
                     Image(systemName: "paperplane.fill")
                         .font(.title2)
                         .foregroundColor(Color(hex: "#CADDAD"))
