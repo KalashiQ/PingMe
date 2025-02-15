@@ -10,11 +10,22 @@ struct RegistrationView: View {
     @State private var viewModel = RegistrationViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123", confirmPassword: "Password#123")
     
     var body: some View {
-        NavigationStack{
-            ZStack {
-                Color(hex: "#CADDAD").ignoresSafeArea()
-                
-                ScrollView(showsIndicators: false) {
+        ZStack {
+            Color(hex: "#CADDAD").ignoresSafeArea()
+            
+            if viewModel.showVerification {
+                VerificationView(email: viewModel.email,
+                             contentOpacity: .constant(0),
+                             backgroundHeight: .constant(UIScreen.main.bounds.height),
+                             backgroundWidth: .constant(UIScreen.main.bounds.width),
+                             isAnimating: .constant(true),
+                             onBack: {
+                                 withAnimation(.spring()) {
+                                     viewModel.showVerification = false
+                                 }
+                             })
+                    .transition(.move(edge: .trailing))
+            } else {
                     VStack(alignment: .leading) {
                         VStack(alignment: .leading, spacing: 16) {
                             Text("Регистрация")
@@ -30,7 +41,7 @@ struct RegistrationView: View {
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
                                         .padding(.horizontal, 8)
-                                        .frame(width: 123, height: 23)
+                                        .frame(width: 120, height: 23)
                                         .background(Color(hex: "#CADDAD"))
                                         .zIndex(1)
                                         .offset(x: 16, y: 10)
@@ -47,7 +58,7 @@ struct RegistrationView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 0) {
-                                    Text("e-mail*:")
+                                    Text("e-mail:")
                                         .font(.custom("Inter", size: 21))
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
@@ -69,7 +80,7 @@ struct RegistrationView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 0) {
-                                    Text("пароль*:")
+                                    Text("пароль:")
                                         .font(.custom("Inter", size: 21))
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
@@ -92,7 +103,7 @@ struct RegistrationView: View {
                                 }
                                 
                                 VStack(alignment: .leading, spacing: 0) {
-                                    Text("подтверждение*:")
+                                    Text("подтверждение:")
                                         .font(.custom("Inter", size: 21))
                                         .fontWeight(.regular)
                                         .foregroundColor(Color(hex: "#525252"))
@@ -163,21 +174,13 @@ struct RegistrationView: View {
                                 .padding(.top, 8)
                                 .frame(maxWidth: .infinity, alignment: .center)
                         }
-                        .padding(.top, 200)
+                        .padding(.top, 90)
                         .padding()
                     }
                     .frame(maxWidth: .infinity, minHeight: UIScreen.main.bounds.height, alignment: .top)
-                }
-            }
-            .navigationDestination(isPresented: $viewModel.showVerification) {
-                VerificationView(email: viewModel.email,
-                                 contentOpacity: .constant(0),
-                                 backgroundHeight: .constant(UIScreen.main.bounds.height),
-                                 backgroundWidth: .constant(UIScreen.main.bounds.width),
-                                 isAnimating: .constant(true)
-                )
             }
         }
+        .animation(.spring(), value: viewModel.showVerification)
     }
 }
 

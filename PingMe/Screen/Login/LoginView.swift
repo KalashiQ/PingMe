@@ -130,10 +130,21 @@ struct LoginView: View {
             if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
-                    contentOpacity: $viewModel.contentOpacity,
-                    backgroundHeight: $viewModel.backgroundHeight,
-                    backgroundWidth: $viewModel.backgroundWidth,
-                    isAnimating: $viewModel.isAnimatingLogin
+                    contentOpacity: .constant(0),
+                    backgroundHeight: .constant(UIScreen.main.bounds.height),
+                    backgroundWidth: .constant(UIScreen.main.bounds.width),
+                    isAnimating: .constant(true),
+                    onBack: {
+                        withAnimation(.easeInOut(duration: 1.1)) {
+                            viewModel.backgroundHeight = 745
+                            viewModel.backgroundWidth = 400
+                            viewModel.contentOpacity = 1
+                        }
+                        
+                        DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
+                            viewModel.isAnimatingLogin = false
+                        }
+                    }
                 )
                 .opacity(1 - viewModel.contentOpacity)
             }

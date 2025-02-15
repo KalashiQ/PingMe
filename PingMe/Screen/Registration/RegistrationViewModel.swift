@@ -13,6 +13,7 @@ class RegistrationViewModel {
     var username: String = "@Kalashiq"
     var isValidUsername: Bool = true
     var showVerification: Bool = false
+    var onBack: (() -> Void)?
     
     init(email: String = "", password: String = "", confirmPassword: String = "") {
         self.email = email

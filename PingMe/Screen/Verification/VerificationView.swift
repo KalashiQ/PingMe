@@ -12,28 +12,21 @@ struct VerificationView: View {
     @Environment(\.presentationMode) var presentationMode
     
     init(email: String, contentOpacity: Binding<Double>, backgroundHeight: Binding<CGFloat>, 
-         backgroundWidth: Binding<CGFloat>, isAnimating: Binding<Bool>) {
+         backgroundWidth: Binding<CGFloat>, isAnimating: Binding<Bool>,
+         onBack: @escaping () -> Void) {
         _viewModel = State(initialValue: VerificationViewModel(email: email))
         _contentOpacity = contentOpacity
         _backgroundHeight = backgroundHeight
         _backgroundWidth = backgroundWidth
         _isAnimating = isAnimating
+        self.viewModel.onBack = onBack
     }
     
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 20) {
                 Button(action: {
-                    dismiss()
-                    withAnimation(.easeInOut(duration: 1.1)) {
-                        backgroundHeight = 745
-                        backgroundWidth = 400
-                        contentOpacity = 1
-                    }
-                    
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 1.1) {
-                        isAnimating = false
-                    }
+                    viewModel.onBack()
                 }) {
                     Image(systemName: "arrow.left")
                         .font(.title)
@@ -121,7 +114,8 @@ struct VerificationView: View {
             contentOpacity: .constant(0),
             backgroundHeight: .constant(UIScreen.main.bounds.height),
             backgroundWidth: .constant(UIScreen.main.bounds.width),
-            isAnimating: .constant(true)
+            isAnimating: .constant(true),
+            onBack: {}
         )
 }
 

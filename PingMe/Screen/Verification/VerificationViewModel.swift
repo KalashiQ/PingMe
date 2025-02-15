@@ -9,6 +9,7 @@ class VerificationViewModel {
     var timer: Timer?
     var canResendCode = false
     var email: String
+    var onBack: () -> Void = {}
     
     init(email: String) {
         self.email = email
