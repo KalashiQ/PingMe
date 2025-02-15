@@ -6,15 +6,12 @@ struct ChatsView: View {
     var body: some View {
         NavigationStack {
             VStack(spacing: 0) {
-                // Header
                 header
                 
                 ScrollView {
                     VStack(spacing: 0) {
-                        // Stories
                         storiesSection
                         
-                        // Chats
                         chatsList
                     }
                 }
@@ -52,28 +49,33 @@ struct ChatsView: View {
     }
     
     private var storiesSection: some View {
-        ScrollView(.horizontal, showsIndicators: false) {
-            HStack(spacing: 12) {
-                // Current user story
-                if let currentUser = viewModel.currentUser {
-                    StoryView(story: currentUser, isCurrentUser: true)
+        VStack(spacing: 0) {
+            ScrollView(.horizontal, showsIndicators: false) {
+                HStack(spacing: 12) {
+                    if let currentUser = viewModel.currentUser {
+                        StoryView(story: currentUser, isCurrentUser: true)
+                    }
+                    
+                    ForEach(viewModel.stories) { story in
+                        StoryView(story: story)
+                    }
                 }
-                
-                // Other users stories
-                ForEach(viewModel.stories) { story in
-                    StoryView(story: story)
-                }
+                .padding()
             }
-            .padding()
         }
     }
     
     private var chatsList: some View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.chats) { chat in
-                ChatRowView(chat: chat)
-                    .padding(.horizontal)
-                    .padding(.vertical, 8)
+                VStack(spacing: 0) {
+                    ChatRowView(chat: chat)
+                        .padding(.horizontal)
+                        .padding(.vertical, 8)
+                    
+                    Divider()
+                        .background(Color(uiColor: .systemGray5))
+                }
             }
         }
     }
