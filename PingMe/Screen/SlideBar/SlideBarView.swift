@@ -8,7 +8,7 @@ struct SlideBarView: View {
     var body: some View {
         ZStack(alignment: .leading) {
             if isShowing {
-                Color.black.opacity(0.0001) // Прозрачный слой для отлова тапов
+                Color.black.opacity(0.0001)
                     .ignoresSafeArea()
                     .onTapGesture {
                         isShowing = false
@@ -17,7 +17,6 @@ struct SlideBarView: View {
             
             GeometryReader { geometry in
                 VStack(spacing: 24) {
-                    // Профиль пользователя
                     HStack(spacing: 16) {
                         Circle()
                             .fill(Color(hex: "#CADDAD"))
@@ -34,9 +33,8 @@ struct SlideBarView: View {
                         
                         Spacer()
                     }
-                    .padding(.top, 100) // Фиксированный отступ сверху
+                    .padding(.top, 100)
                     
-                    // Кнопки
                     VStack(spacing: 12) {
                         Button(action: {}) {
                             HStack {
@@ -52,7 +50,7 @@ struct SlideBarView: View {
                         
                         Button(action: {}) {
                             HStack {
-                                Text("Внезапная встреча")
+                                Text("\"Внезапная встреча\"")
                                     .font(.system(size: 16))
                                 Spacer()
                                 Image(systemName: "plus")
@@ -79,7 +77,6 @@ struct SlideBarView: View {
                     
                     Spacer()
                     
-                    // Кнопка настроек
                     Button(action: {}) {
                         HStack {
                             Text("Настройки")
@@ -99,15 +96,14 @@ struct SlideBarView: View {
                 .background(
                     Rectangle()
                         .fill(Color.black)
-                        .shadow(color: .black, radius: 10, x: 5, y: 0) // Увеличили радиус тени
-                        .padding(.leading, -50) // Увеличили отрицательный отступ
-                        .clipped()
+                        .padding(.leading, -50)
+
                 )
-                .offset(x: isShowing ? 0 : -(geometry.size.width + 50)) // Добавляем дополнительное смещение
+                .offset(x: isShowing ? 0 : -(geometry.size.width))
             }
             .ignoresSafeArea()
         }
         .transition(.move(edge: .leading))
-        .animation(.spring(response: 0.5, dampingFraction: 0.8), value: isShowing)
+        .animation(.spring(response: 0.2, dampingFraction: 1.5), value: isShowing)
     }
-} 
+}

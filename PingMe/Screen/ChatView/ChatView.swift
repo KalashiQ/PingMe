@@ -145,7 +145,7 @@ struct MessageBubble: View {
                     .padding(.vertical, 8)
                     .padding(.bottom, 16)
                     .overlay(
-                        Text(formatTime(message.timestamp))
+                        Text(message.timestamp.formattedTime())
                             .font(.caption2)
                             .foregroundColor(.gray)
                             .padding([.trailing, .bottom], 8),
@@ -157,12 +157,6 @@ struct MessageBubble: View {
             
             if !message.isFromCurrentUser { Spacer() }
         }
-    }
-    
-    private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
     }
 }
 

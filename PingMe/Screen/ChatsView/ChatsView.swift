@@ -155,7 +155,7 @@ struct ChatRowView: View {
                 
                 Spacer()
                 
-                Text(formatTime(chat.lastMessageTime))
+                Text(chat.lastMessageTime.formattedTime())
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
             }
@@ -163,11 +163,6 @@ struct ChatRowView: View {
         }
     }
     
-    private func formatTime(_ date: Date) -> String {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "HH:mm"
-        return formatter.string(from: date)
-    }
 }
 
 #Preview {
