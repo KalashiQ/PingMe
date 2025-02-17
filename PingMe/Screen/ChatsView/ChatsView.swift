@@ -34,7 +34,11 @@ struct ChatsView: View {
     
     private var header: some View {
         HStack {
-            Button(action: { viewModel.isSlideBarShowing.toggle() }) {
+            Button(action: { 
+                withAnimation(.spring(response: 0.9, dampingFraction: 0.8)) {
+                    viewModel.isSlideBarShowing.toggle()
+                }
+            }) {
                 Image(systemName: "line.3.horizontal")
                     .font(.title2)
                     .foregroundColor(.black)
@@ -103,6 +107,7 @@ struct ChatsView: View {
     }
 }
 
+// MARK: - Functions
 struct StoryView: View {
     let story: Story
     var isCurrentUser: Bool = false

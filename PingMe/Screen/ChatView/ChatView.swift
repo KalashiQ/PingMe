@@ -132,6 +132,7 @@ struct ChatView: View {
     }
 }
 
+// MARK: - Functions
 struct MessageBubble: View {
     let message: Message
     

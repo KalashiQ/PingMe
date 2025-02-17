@@ -24,9 +24,9 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A1D2C1212D574C89002E22C4 /* PingMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1D2C1312D574C8A002E22C4 /* PingMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1D2C13B2D574C8A002E22C4 /* PingMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A19C8A902D62FA8400B2F4AA /* PingMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = PingMeTests.xctest; path = "/Users/aleksandrkhakana/Desktop/PingMe/build/Debug-iphoneos/PingMe.app/PlugIns/PingMeTests.xctest"; sourceTree = "<absolute>"; };
+		A19C8A912D62FA8400B2F4AA /* PingMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; name = PingMeUITests.xctest; path = "/Users/aleksandrkhakana/Desktop/PingMe/build/Debug-iphoneos/PingMeUITests-Runner.app/PlugIns/PingMeUITests.xctest"; sourceTree = "<absolute>"; };
+		A19C8ADA2D632C1C00B2F4AA /* PingMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -78,18 +78,8 @@
 				A1D2C1232D574C89002E22C4 /* PingMe */,
 				A1D2C1342D574C8A002E22C4 /* PingMeTests */,
 				A1D2C13E2D574C8A002E22C4 /* PingMeUITests */,
-				A1D2C1222D574C89002E22C4 /* Products */,
+				A19C8ADA2D632C1C00B2F4AA /* PingMe.app */,
 			);
-			sourceTree = "<group>";
-		};
-		A1D2C1222D574C89002E22C4 /* Products */ = {
-			isa = PBXGroup;
-			children = (
-				A1D2C1212D574C89002E22C4 /* PingMe.app */,
-				A1D2C1312D574C8A002E22C4 /* PingMeTests.xctest */,
-				A1D2C13B2D574C8A002E22C4 /* PingMeUITests.xctest */,
-			);
-			name = Products;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -114,7 +104,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMe;
-			productReference = A1D2C1212D574C89002E22C4 /* PingMe.app */;
+			productReference = A19C8ADA2D632C1C00B2F4AA /* PingMe.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A1D2C1302D574C8A002E22C4 /* PingMeTests */ = {
@@ -137,7 +127,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMeTests;
-			productReference = A1D2C1312D574C8A002E22C4 /* PingMeTests.xctest */;
+			productReference = A19C8A902D62FA8400B2F4AA /* PingMeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A1D2C13A2D574C8A002E22C4 /* PingMeUITests */ = {
@@ -160,7 +150,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMeUITests;
-			productReference = A1D2C13B2D574C8A002E22C4 /* PingMeUITests.xctest */;
+			productReference = A19C8A912D62FA8400B2F4AA /* PingMeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -196,7 +186,7 @@
 			mainGroup = A1D2C1182D574C89002E22C4;
 			minimizedProjectReferenceProxies = 1;
 			preferredProjectObjectVersion = 77;
-			productRefGroup = A1D2C1222D574C89002E22C4 /* Products */;
+			productRefGroup = A1D2C1182D574C89002E22C4;
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
@@ -402,6 +392,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -431,6 +422,7 @@
 				INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchScreen_Generation = YES;
+				INFOPLIST_KEY_UILaunchStoryboardName = "Launch Screen.storyboard";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				LD_RUNPATH_SEARCH_PATHS = (
