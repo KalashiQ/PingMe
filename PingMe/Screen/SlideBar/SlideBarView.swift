@@ -12,9 +12,7 @@ struct SlideBarView: View {
                     .opacity(isShowing ? 0.2 : 0)
                     .ignoresSafeArea()
                     .onTapGesture {
-                        withAnimation(.spring(response: 0.1, dampingFraction: 0.8)) {
-                            isShowing = false
-                        }
+                        isShowing = false
                     }
                 
                 HStack(spacing: 0) {
@@ -107,6 +105,5 @@ struct SlideBarView: View {
             }
             .ignoresSafeArea()
         }
-        .animation(.spring(response: 0.8, dampingFraction: 0.8), value: isShowing)
     }
 }

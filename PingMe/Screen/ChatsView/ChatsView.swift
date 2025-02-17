@@ -35,9 +35,7 @@ struct ChatsView: View {
     private var header: some View {
         HStack {
             Button(action: { 
-                withAnimation(.spring(response: 0.9, dampingFraction: 0.8)) {
-                    viewModel.isSlideBarShowing.toggle()
-                }
+                viewModel.isSlideBarShowing.toggle()
             }) {
                 Image(systemName: "line.3.horizontal")
                     .font(.title2)
