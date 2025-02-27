@@ -59,8 +59,20 @@ class VerificationViewModel {
         timer?.invalidate()
     }
     
-    func verifyCode() {
-        // Логика проверки кода
+    @MainActor
+    func verifyCode() async throws {
+        let code = verificationCode.joined()
+        do {
+            let registrationVM = RegistrationViewModel(email: email, password: "", confirmPassword: "")
+            if let userData = try await registrationVM.verifyRegistration(token: code) {
+                // Сохранить токены и данные пользователя
+                print("Verification successful: \(userData)")
+                // Перейти к следующему экрану
+            }
+        } catch {
+            print("Verification error: \(error)")
+            throw error
+        }
     }
     
     func resendCode() {

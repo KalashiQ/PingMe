@@ -131,8 +131,12 @@ struct RegistrationView: View {
                             HStack {
                                 Button(action: {
                                     if viewModel.isValidForm() {
-                                        withAnimation(.spring()) {
-                                            viewModel.showVerification = true
+                                        Task {
+                                            do {
+                                                try await viewModel.register()
+                                            } catch {
+                                                print("Registration error: \(error)")
+                                            }
                                         }
                                     }
                                 }) {
@@ -145,7 +149,7 @@ struct RegistrationView: View {
                                         .padding(.leading, 288)
                                 }
                                 .padding(.top, 26)
-                                .padding(.bottom, 30)
+                                .padding(.bottom, 50)
                             }
                             
                             Button(action: {

@@ -4,6 +4,8 @@ import CoreFoundation
 
 @Observable
 class RegistrationViewModel {
+    private let authService = AuthService()
+    
     var email: String
     var isValidEmail: Bool = true
     var password: String
@@ -50,6 +52,47 @@ class RegistrationViewModel {
     func isValidForm() -> Bool {
         isValidEmail && isValidPassword && isValidPasswordMatch && isValidUsername &&
         !email.isEmpty && !password.isEmpty && !confirmPassword.isEmpty && !username.isEmpty
+    }
+    
+    @MainActor
+    func register() async throws {
+        do {
+            let response = try await authService.register(
+                email: email,
+                password: password,
+                name: username.replacingOccurrences(of: "@", with: "")
+            )
+            
+            if response.success {
+                showVerification = true
+            } else {
+                throw AuthError.serverError(response.error ?? "Unknown error")
+            }
+        } catch {
+            // Обработка ошибок
+            print("Registration error: \(error)")
+            throw error
+        }
+    }
+    
+    @MainActor
+    func verifyRegistration(token: String) async throws -> VerifyResponseData? {
+        do {
+            let response = try await authService.verifyRegistration(
+                email: email,
+                password: password,
+                token: token
+            )
+            
+            if response.success {
+                return response.data
+            } else {
+                throw AuthError.serverError(response.error ?? "Unknown error")
+            }
+        } catch {
+            print("Verification error: \(error)")
+            throw error
+        }
     }
 }
 
