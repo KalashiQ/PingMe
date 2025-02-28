@@ -14,16 +14,19 @@ struct RegistrationView: View {
             Color(hex: "#CADDAD").ignoresSafeArea()
             
             if viewModel.showVerification {
-                VerificationView(email: viewModel.email,
-                             contentOpacity: .constant(0),
-                             backgroundHeight: .constant(UIScreen.main.bounds.height),
-                             backgroundWidth: .constant(UIScreen.main.bounds.width),
-                             isAnimating: .constant(true),
-                             onBack: {
-                                 withAnimation(.spring()) {
-                                     viewModel.showVerification = false
-                                 }
-                             })
+                VerificationView(
+                    email: viewModel.email,
+                    password: viewModel.password,
+                    contentOpacity: .constant(0),
+                    backgroundHeight: .constant(UIScreen.main.bounds.height),
+                    backgroundWidth: .constant(UIScreen.main.bounds.width),
+                    isAnimating: .constant(true),
+                    onBack: {
+                        withAnimation(.spring()) {
+                            viewModel.showVerification = false
+                        }
+                    }
+                )
                     .transition(.move(edge: .trailing))
             } else {
                     VStack(alignment: .leading) {
@@ -149,7 +152,7 @@ struct RegistrationView: View {
                                         .padding(.leading, 288)
                                 }
                                 .padding(.top, 26)
-                                .padding(.bottom, 50)
+                                .padding(.bottom, 26)
                             }
                             
                             Button(action: {
@@ -171,12 +174,6 @@ struct RegistrationView: View {
                                     .overlay(RoundedRectangle(cornerRadius: 8).stroke(Color.white, lineWidth: 1))
                                     .frame(maxWidth: .infinity, alignment: .center)
                             }
-                            
-                            Text("* - обязательное поле")
-                                .font(.system(size: 12))
-                                .foregroundColor(Color(hex: "#525252"))
-                                .padding(.top, 8)
-                                .frame(maxWidth: .infinity, alignment: .center)
                         }
                         .padding(.top, 80)
                         .padding()

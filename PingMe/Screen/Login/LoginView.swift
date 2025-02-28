@@ -130,6 +130,7 @@ struct LoginView: View {
             if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
+                    password: viewModel.password,
                     contentOpacity: .constant(0),
                     backgroundHeight: .constant(UIScreen.main.bounds.height),
                     backgroundWidth: .constant(UIScreen.main.bounds.width),

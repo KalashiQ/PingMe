@@ -27,12 +27,12 @@ class ChatsViewModel {
         ]
         
         chats = [
-            Chat(username: "Вован", lastMessage: "Погнали в фифу бро", lastMessageTime: Date(timeIntervalSinceNow: -120)),
-            Chat(username: "Серега Сварщик", lastMessage: "5 литров пива за работу", lastMessageTime: Date(timeIntervalSinceNow: -240)),
-            Chat(username: "Антонина Армотура", lastMessage: "100 рублей с тебя", lastMessageTime: Date(timeIntervalSinceNow: -7200), isGroup: true),
-            Chat(username: "Group name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -14400), isGroup: true),
-            Chat(username: "Name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -21600)),
-            Chat(username: "Name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -36000)),
+            Chat(username: "Вован", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -120)),
+            Chat(username: "Серега", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -240)),
+            Chat(username: "Антонина", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -7200), isGroup: true),
+            Chat(username: "Киря", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -14400), isGroup: true),
+            Chat(username: "Саня", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -21600)),
+            Chat(username: "Егорыч", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -36000)),
             Chat(username: "Group name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -43200), isGroup: true),
             Chat(username: "Name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -36000)),
             Chat(username: "Group name", lastMessage: "last message...", lastMessageTime: Date(timeIntervalSinceNow: -43200), isGroup: true),
