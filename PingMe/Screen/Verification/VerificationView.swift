@@ -80,13 +80,15 @@ struct VerificationView: View {
                 Button(action: {
                     Task {
                         do {
+                            print("\n=== Verification Button Pressed ===")
                             if let userData = try await viewModel.verifyCode() {
+                                print("✅ Verification successful, saving user data")
                                 viewModel.saveUserData(userData)
                                 
-                                // Закрываем текущее представление
+                                print("Dismissing verification view")
                                 presentationMode.wrappedValue.dismiss()
                                 
-                                // Переходим на ChatsView через главное окно
+                                print("Transitioning to ChatsView")
                                 DispatchQueue.main.async {
                                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                                        let window = windowScene.windows.first {
@@ -96,11 +98,15 @@ struct VerificationView: View {
                                         }
                                     }
                                 }
+                            } else {
+                                print("❌ No user data received after successful verification")
                             }
                         } catch {
+                            print("\n❌ Verification Button Error:")
+                            print("Error type: \(type(of: error))")
+                            print("Error description: \(error.localizedDescription)")
                             errorMessage = error.localizedDescription
                             showError = true
-                            print("Verification error: \(error)")
                         }
                     }
                 }) {

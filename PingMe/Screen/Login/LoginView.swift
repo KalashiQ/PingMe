@@ -183,7 +183,15 @@ struct LoginView: View {
             viewModel.validatePassword()
             
             if viewModel.isValidEmail && viewModel.isValidPassword {
-                startTransitionAnimation(for: true)
+                Task {
+                    do {
+                        try await viewModel.login()
+                        startTransitionAnimation(for: true)
+                    } catch {
+                        // Handle error - you might want to add an alert state to your ViewModel
+                        print("Login error: \(error)")
+                    }
+                }
             }
         }
     

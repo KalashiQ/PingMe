@@ -37,5 +37,21 @@ class LoginViewModel {
             isValidPassword = false
         }
     }
+    
+    @MainActor
+    func login() async throws {
+        let authService = AuthService()
+        
+        do {
+            let response = try await authService.login(email: email, password: password)
+            
+            if !response.success {
+                throw AuthError.serverError(response.error ?? "Login failed")
+            }
+            
+        } catch {
+            throw error
+        }
+    }
 }
 

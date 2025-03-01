@@ -12,6 +12,17 @@ struct VerifyRegistrationRequest: Codable {
     let token: String
 }
 
+struct LoginRequest: Codable {
+    let email: String
+    let password: String
+}
+
+struct VerifyLoginRequest: Codable {
+    let email: String
+    let password: String
+    let token: String
+}
+
 struct APIResponse<T: Codable>: Codable {
     let success: Bool
     let message: String?

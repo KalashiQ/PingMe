@@ -175,7 +175,7 @@ struct RegistrationView: View {
                                     .frame(maxWidth: .infinity, alignment: .center)
                             }
                         }
-                        .padding(.top, 80)
+                        .padding(.top, 90)
                         .padding()
                     }
                     .frame(maxWidth: .infinity, minHeight: UIScreen.main.bounds.height, alignment: .top)

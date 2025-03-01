@@ -12,6 +12,7 @@ class VerificationViewModel {
     var email: String
     var onBack: () -> Void = {}
     private let password: String
+    var username: String = "@Kalashiq"
     
     init(email: String, password: String) {
         self.email = email
@@ -20,7 +21,7 @@ class VerificationViewModel {
     
     func startTimer() {
         canResendCode = false
-        timeRemaining = 300
+        timeRemaining = 5
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -66,41 +67,62 @@ class VerificationViewModel {
     func verifyCode() async throws -> VerifyResponseData? {
         let code = verificationCode.joined()
         
-        // Добавляем отладочную информацию
-        print("=== Verification Debug Info ===")
+        print("\n=== Verification Process Debug ===")
+        print("Step 1: Input Validation")
         print("Email: \(email)")
+        print("Password: [HIDDEN]")
         print("Verification code: \(code)")
-        print("Code length: \(code.count)")
-        print("Individual digits: \(verificationCode)")
-        print("==========================")
+        print("Code array state: \(verificationCode)")
         
         guard code.count == 6 else {
-            print("Error: Code length is not 6 digits")
+            print("❌ Validation Failed: Code length is not 6 digits")
             throw AuthError.serverError("Код должен состоять из 6 цифр")
         }
         
+        print("✅ Input Validation Passed")
+        
         do {
-            print("Sending verification request to server...")
-            let response = try await authService.verifyRegistration(
+            print("\nStep 2: Sending Request")
+            print("Calling verifyLogin with:")
+            print("- Email: \(email)")
+            print("- Code: \(code)")
+            
+            let response = try await authService.verifyLogin(
                 email: email,
                 password: password,
                 token: code
             )
             
-            print("Server response received:")
-            print("Success: \(response.success)")
-            print("Message: \(response.message ?? "No message")")
-            print("Error: \(response.error ?? "No error")")
+            print("\nStep 3: Processing Response")
+            print("Response received:")
+            print("- Success: \(response.success)")
+            print("- Message: \(response.message ?? "No message")")
+            print("- Error: \(response.error ?? "No error")")
+            print("- Has Data: \(response.data != nil)")
             
             if response.success {
                 if let userData = response.data {
-                    print("Verification successful! User data received.")
+                    print("✅ Verification Successful!")
+                    print("User Data received:")
+                    print("- User ID: \(userData.user.id)")
+                    print("- Email: \(userData.user.email)")
+                    print("- Name: \(userData.user.name)")
                     return userData
+                } else {
+                    print("❌ Error: Response success but no user data")
+                    throw AuthError.serverError("Успешный ответ без данных пользователя")
                 }
+            } else {
+                print("❌ Error: Server returned failure")
+                throw AuthError.serverError(response.error ?? "Ошибка верификации")
             }
-            throw AuthError.serverError(response.error ?? "Ошибка верификации")
         } catch {
-            print("Verification failed with error: \(error)")
+            print("\n❌ Error Occurred:")
+            print("Error type: \(type(of: error))")
+            print("Error description: \(error.localizedDescription)")
+            if let authError = error as? AuthError {
+                print("AuthError details: \(authError)")
+            }
             throw error
         }
     }
