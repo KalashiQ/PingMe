@@ -1,9 +1,24 @@
 import SwiftUI
 
+enum ActiveScreen {
+    case chats
+    case suddenMeet
+    case pingMe
+    case settings
+    case profile
+}
+
 struct SlideBarView: View {
     @Binding var isShowing: Bool
     let currentUserName: String
     let username: String
+    @AppStorage("isDarkMode") private var isDarkMode = false
+    var activeScreen: ActiveScreen?
+    var onNavigate: ((ActiveScreen) -> Void)? = nil
+    
+    private func isActive(_ screen: ActiveScreen) -> Bool {
+        return activeScreen == screen
+    }
     
     var body: some View {
         GeometryReader { geometry in
@@ -36,58 +51,104 @@ struct SlideBarView: View {
                         .padding(.top, 100)
                         
                         VStack(spacing: 12) {
+                            Button(action: { 
+                                onNavigate?(.chats)
+                                isShowing = false
+                            }) {
+                                HStack {
+                                    Image(systemName: "bubble.left.and.bubble.right.fill")
+                                    Text("Чаты")
+                                        .font(.system(size: 16))
+                                    Spacer()
+                                }
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(isActive(.chats) ? Color(hex: "#CADDAD") : Color.black)
+                                .cornerRadius(12)
+                            }
+                            
                             Button(action: {}) {
                                 HStack {
+                                    Image(systemName: "person.fill")
                                     Text("Редактировать профиль")
                                         .font(.system(size: 16))
                                     Spacer()
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color(hex: "#444444"))
+                                .background(isActive(.profile) ? Color(hex: "#CADDAD") : Color.black)
                                 .cornerRadius(12)
                             }
                             
                             Button(action: {}) {
                                 HStack {
-                                    Text("\"Внезапная встреча\"")
+                                    Image(systemName: "person.2.fill")
+                                    Text("«Внезапная встреча»")
                                         .font(.system(size: 16))
                                     Spacer()
-                                    Image(systemName: "plus")
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color(hex: "#444444"))
+                                .background(isActive(.suddenMeet) ? Color(hex: "#CADDAD") : Color.black)
                                 .cornerRadius(12)
                             }
                             
                             Button(action: {}) {
                                 HStack {
+                                    Image(systemName: "location.circle.fill")
                                     Text("PingMe")
                                         .font(.system(size: 16))
                                     Spacer()
-                                    Image(systemName: "plus")
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(Color(hex: "#444444"))
+                                .background(isActive(.pingMe) ? Color(hex: "#CADDAD") : Color.black)
+                                .cornerRadius(12)
+                            }
+                            
+                            Button(action: {}) {
+                                HStack {
+                                    Image(systemName: "gearshape.fill")
+                                    Text("Настройки")
+                                        .font(.system(size: 16))
+                                    Spacer()
+                                }
+                                .foregroundColor(.white)
+                                .padding()
+                                .background(isActive(.settings) ? Color(hex: "#CADDAD") : Color.black)
                                 .cornerRadius(12)
                             }
                         }
                         
                         Spacer()
                         
-                        Button(action: {}) {
-                            HStack {
-                                Text("Настройки")
-                                    .font(.system(size: 16))
-                                Spacer()
-                                Image(systemName: "gearshape.fill")
+                        Divider()
+                            .background(Color.gray)
+                            .padding(.horizontal, -20)
+                        
+                        VStack(spacing: 16) {
+                            Toggle(isOn: $isDarkMode) {
+                                HStack {
+                                    Image(systemName: isDarkMode ? "moon.fill" : "sun.max.fill")
+                                    Text(isDarkMode ? "Темная тема" : "Светлая тема")
+                                        .font(.system(size: 16))
+                                }
                             }
+                            .toggleStyle(SwitchToggleStyle(tint: Color(hex: "#CADDAD")))
                             .foregroundColor(.white)
-                            .padding()
-                            .background(Color(hex: "#444444"))
-                            .cornerRadius(12)
+                            
+                            Button(action: {}) {
+                                HStack {
+                                    Image(systemName: "rectangle.portrait.and.arrow.right")
+                                    Text("Выйти")
+                                        .font(.system(size: 16))
+                                }
+                                .foregroundColor(.red)
+                                .padding()
+                                .frame(maxWidth: .infinity)
+                                .background(Color(hex: "#444444"))
+                                .cornerRadius(12)
+                            }
                         }
                         .padding(.bottom, 32)
                     }
@@ -106,4 +167,12 @@ struct SlideBarView: View {
             .ignoresSafeArea()
         }
     }
+}
+
+#Preview {
+    SlideBarView(
+        isShowing: .constant(true),
+        currentUserName: "Test User",
+        username: "testuser"
+    )
 }

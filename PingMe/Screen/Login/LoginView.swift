@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123")
+    @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123", isFromLogin: true)
     
     var body: some View {
         ZStack {
@@ -130,6 +130,8 @@ struct LoginView: View {
             if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
+                    password: viewModel.password,
+                    isFromLogin: viewModel.isFromLogin,
                     contentOpacity: .constant(0),
                     backgroundHeight: .constant(UIScreen.main.bounds.height),
                     backgroundWidth: .constant(UIScreen.main.bounds.width),
@@ -182,7 +184,15 @@ struct LoginView: View {
             viewModel.validatePassword()
             
             if viewModel.isValidEmail && viewModel.isValidPassword {
-                startTransitionAnimation(for: true)
+                Task {
+                    do {
+                        try await viewModel.login()
+                        startTransitionAnimation(for: true)
+                    } catch {
+                        // Handle error - you might want to add an alert state to your ViewModel
+                        print("Login error: \(error)")
+                    }
+                }
             }
         }
     

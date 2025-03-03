@@ -8,17 +8,25 @@ struct VerificationView: View {
     @Binding var backgroundWidth: CGFloat
     @Binding var isAnimating: Bool
     @FocusState private var focusedField: Int?
-    @State private var navigateToChats = false
+    @State private var showError = false
+    @State private var errorMessage = ""
     @Environment(\.presentationMode) var presentationMode
+    private let password: String
     
-    init(email: String, contentOpacity: Binding<Double>, backgroundHeight: Binding<CGFloat>, 
-         backgroundWidth: Binding<CGFloat>, isAnimating: Binding<Bool>,
+    init(email: String, 
+         password: String,
+         isFromLogin: Bool,
+         contentOpacity: Binding<Double>,
+         backgroundHeight: Binding<CGFloat>, 
+         backgroundWidth: Binding<CGFloat>, 
+         isAnimating: Binding<Bool>,
          onBack: @escaping () -> Void) {
-        _viewModel = State(initialValue: VerificationViewModel(email: email))
+        _viewModel = State(initialValue: VerificationViewModel(email: email, password: password, isFromLogin: isFromLogin))
         _contentOpacity = contentOpacity
         _backgroundHeight = backgroundHeight
         _backgroundWidth = backgroundWidth
         _isAnimating = isAnimating
+        self.password = password
         self.viewModel.onBack = onBack
     }
     
@@ -70,11 +78,29 @@ struct VerificationView: View {
                 .padding(.horizontal, 21)
                 
                 Button(action: {
-                    presentationMode.wrappedValue.dismiss()
-                    DispatchQueue.main.asyncAfter(deadline: .now() + 0.1) {
-                        if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                           let window = windowScene.windows.first {
-                            window.rootViewController = UIHostingController(rootView: ChatsView())
+                    Task {
+                        do {
+                            print("\n=== Verification Button Pressed ===")
+                            if let userData = try await viewModel.verifyCode() {
+                                viewModel.saveUserData(userData)
+                                
+                                presentationMode.wrappedValue.dismiss()
+                                
+                                DispatchQueue.main.async {
+                                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                       let window = windowScene.windows.first {
+                                        withAnimation {
+                                            window.rootViewController = UIHostingController(rootView: ChatsView())
+                                            window.makeKeyAndVisible()
+                                        }
+                                    }
+                                }
+                            } else {
+                                print("❌ No user data received after successful verification")
+                            }
+                        } catch {
+                            errorMessage = error.localizedDescription
+                            showError = true
                         }
                     }
                 }) {
@@ -87,6 +113,11 @@ struct VerificationView: View {
                 }
                 .padding(.horizontal, 21)
                 .padding(.top, 32)
+                .alert("Ошибка", isPresented: $showError) {
+                    Button("OK", role: .cancel) { }
+                } message: {
+                    Text(errorMessage)
+                }
                 
                 Button(action: viewModel.resendCode) {
                     Text(viewModel.canResendCode ? "Отправить код повторно" : "Отправить повторно через \(viewModel.formattedTime)")
@@ -111,6 +142,8 @@ struct VerificationView: View {
 #Preview {
         VerificationView(
             email: "",
+            password: "",
+            isFromLogin: true,
             contentOpacity: .constant(0),
             backgroundHeight: .constant(UIScreen.main.bounds.height),
             backgroundWidth: .constant(UIScreen.main.bounds.width),

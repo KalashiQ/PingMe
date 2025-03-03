@@ -25,7 +25,12 @@ struct ChatsView: View {
                     SlideBarView(
                         isShowing: $viewModel.isSlideBarShowing,
                         currentUserName: viewModel.currentUserName,
-                        username: viewModel.username
+                        username: viewModel.username,
+                        activeScreen: .chats,
+                        onNavigate: { screen in
+                            // Здесь можно добавить логику навигации
+                            // когда будут готовы другие экраны
+                        }
                     )
                 }
             }

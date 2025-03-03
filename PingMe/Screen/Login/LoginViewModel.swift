@@ -16,10 +16,12 @@ class LoginViewModel {
     var contentOpacity: Double = 1
     var isAnimatingLogin: Bool = false
     var isAnimatingRegistration: Bool = false
+    var isFromLogin: Bool = true
     
-    init(email: String = "", password: String = "") {
+    init(email: String = "", password: String = "", isFromLogin: Bool) {
         self.email = email
         self.password = password
+        self.isFromLogin = isFromLogin
         validateEmail()
         validatePassword()
     }
@@ -35,6 +37,24 @@ class LoginViewModel {
              isValidPassword = true
         } else {
             isValidPassword = false
+        }
+    }
+    
+    @MainActor
+    func login() async throws {
+        let authService = AuthService()
+        
+        do {
+            let response = try await authService.login(email: email, password: password)
+            
+            if !response.success {
+                throw AuthError.serverError(response.error ?? "Login failed")
+            }
+            
+            showVerification = true
+            
+        } catch {
+            throw error
         }
     }
 }
