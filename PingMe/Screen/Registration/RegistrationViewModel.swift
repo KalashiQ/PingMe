@@ -5,7 +5,6 @@ import CoreFoundation
 @Observable
 class RegistrationViewModel {
     private let authService = AuthService()
-    
     var email: String
     var isValidEmail: Bool = true
     var password: String
@@ -16,13 +15,16 @@ class RegistrationViewModel {
     var isValidUsername: Bool = true
     var showVerification: Bool = false
     var onBack: (() -> Void)?
+    var isFromLogin: Bool = false
     
-    init(email: String = "", password: String = "", confirmPassword: String = "") {
+    init(email: String = "", password: String = "", confirmPassword: String = "", isFromLogin: Bool = false) {
         self.email = email
         self.isValidEmail = true
         self.password = password
         self.confirmPassword = confirmPassword
         self.isValidPassword = true
+        self.isFromLogin = isFromLogin
+        
     }
     
     func validateEmail() {
@@ -64,12 +66,13 @@ class RegistrationViewModel {
             )
             
             if response.success {
+                print("Registration successful, setting isFromLogin to false")
+                isFromLogin = false
                 showVerification = true
             } else {
                 throw AuthError.serverError(response.error ?? "Unknown error")
             }
         } catch {
-            // Обработка ошибок
             print("Registration error: \(error)")
             throw error
         }
@@ -78,6 +81,7 @@ class RegistrationViewModel {
     @MainActor
     func verifyRegistration(token: String) async throws -> VerifyResponseData? {
         do {
+            isFromLogin = false
             let response = try await authService.verifyRegistration(
                 email: email,
                 password: password,

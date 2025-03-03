@@ -11,17 +11,17 @@ struct VerificationView: View {
     @State private var showError = false
     @State private var errorMessage = ""
     @Environment(\.presentationMode) var presentationMode
-    
     private let password: String
     
     init(email: String, 
          password: String,
-         contentOpacity: Binding<Double>, 
+         isFromLogin: Bool,
+         contentOpacity: Binding<Double>,
          backgroundHeight: Binding<CGFloat>, 
          backgroundWidth: Binding<CGFloat>, 
          isAnimating: Binding<Bool>,
          onBack: @escaping () -> Void) {
-        _viewModel = State(initialValue: VerificationViewModel(email: email, password: password))
+        _viewModel = State(initialValue: VerificationViewModel(email: email, password: password, isFromLogin: isFromLogin))
         _contentOpacity = contentOpacity
         _backgroundHeight = backgroundHeight
         _backgroundWidth = backgroundWidth
@@ -82,13 +82,10 @@ struct VerificationView: View {
                         do {
                             print("\n=== Verification Button Pressed ===")
                             if let userData = try await viewModel.verifyCode() {
-                                print("✅ Verification successful, saving user data")
                                 viewModel.saveUserData(userData)
                                 
-                                print("Dismissing verification view")
                                 presentationMode.wrappedValue.dismiss()
                                 
-                                print("Transitioning to ChatsView")
                                 DispatchQueue.main.async {
                                     if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
                                        let window = windowScene.windows.first {
@@ -102,9 +99,6 @@ struct VerificationView: View {
                                 print("❌ No user data received after successful verification")
                             }
                         } catch {
-                            print("\n❌ Verification Button Error:")
-                            print("Error type: \(type(of: error))")
-                            print("Error description: \(error.localizedDescription)")
                             errorMessage = error.localizedDescription
                             showError = true
                         }
@@ -149,6 +143,7 @@ struct VerificationView: View {
         VerificationView(
             email: "",
             password: "",
+            isFromLogin: true,
             contentOpacity: .constant(0),
             backgroundHeight: .constant(UIScreen.main.bounds.height),
             backgroundWidth: .constant(UIScreen.main.bounds.width),

@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct LoginView: View {
-    @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123")
+    @State private var viewModel = LoginViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123", isFromLogin: true)
     
     var body: some View {
         ZStack {
@@ -131,6 +131,7 @@ struct LoginView: View {
                 VerificationView(
                     email: viewModel.email,
                     password: viewModel.password,
+                    isFromLogin: viewModel.isFromLogin,
                     contentOpacity: .constant(0),
                     backgroundHeight: .constant(UIScreen.main.bounds.height),
                     backgroundWidth: .constant(UIScreen.main.bounds.width),

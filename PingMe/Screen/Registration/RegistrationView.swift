@@ -1,13 +1,12 @@
 import SwiftUI
 
 struct RegistrationView: View {
+    @State private var viewModel = RegistrationViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123", confirmPassword: "Password#123", isFromLogin: false)
     @Environment(\.dismiss) private var dismiss
     @Binding var contentOpacity: Double
     @Binding var backgroundHeight: CGFloat
     @Binding var backgroundWidth: CGFloat
     @Binding var isAnimating: Bool
-    
-    @State private var viewModel = RegistrationViewModel(email: "Kalashiq.org@gmail.com", password: "Password#123", confirmPassword: "Password#123")
     
     var body: some View {
         ZStack {
@@ -17,6 +16,7 @@ struct RegistrationView: View {
                 VerificationView(
                     email: viewModel.email,
                     password: viewModel.password,
+                    isFromLogin: false,
                     contentOpacity: .constant(0),
                     backgroundHeight: .constant(UIScreen.main.bounds.height),
                     backgroundWidth: .constant(UIScreen.main.bounds.width),

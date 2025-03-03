@@ -12,11 +12,14 @@ class VerificationViewModel {
     var email: String
     var onBack: () -> Void = {}
     private let password: String
-    var username: String = "@Kalashiq"
+    var username: String = ""
+    var isFromLogin: Bool
     
-    init(email: String, password: String) {
+    init(email: String, password: String, isFromLogin: Bool) {
         self.email = email
         self.password = password
+        self.isFromLogin = isFromLogin
+        print("VerificationViewModel initialized with isFromLogin: \(isFromLogin)")
     }
     
     func startTimer() {
@@ -83,15 +86,13 @@ class VerificationViewModel {
         
         do {
             print("\nStep 2: Sending Request")
-            print("Calling verifyLogin with:")
+            print("Calling verify\(isFromLogin ? "Login" : "Registration") with:")
             print("- Email: \(email)")
             print("- Code: \(code)")
             
-            let response = try await authService.verifyLogin(
-                email: email,
-                password: password,
-                token: code
-            )
+            let response = try await isFromLogin ? 
+                authService.verifyLogin(email: email, password: password, token: code) :
+                authService.verifyRegistration(email: email, password: password, token: code)
             
             print("\nStep 3: Processing Response")
             print("Response received:")
@@ -128,18 +129,15 @@ class VerificationViewModel {
     }
     
     func saveUserData(_ userData: VerifyResponseData) {
-        // Сохраняем токены
         UserDefaults.standard.set(userData.tokens.access.token, forKey: "accessToken")
         UserDefaults.standard.set(userData.tokens.refresh.token, forKey: "refreshToken")
         UserDefaults.standard.set(userData.tokens.access.expiresAt.timeIntervalSince1970, forKey: "accessTokenExpiration")
         UserDefaults.standard.set(userData.tokens.refresh.expiresAt.timeIntervalSince1970, forKey: "refreshTokenExpiration")
         
-        // Сохраняем данные пользователя
         if let encodedUser = try? JSONEncoder().encode(userData.user) {
             UserDefaults.standard.set(encodedUser, forKey: "userData")
         }
         
-        // Синхронизируем изменения
         UserDefaults.standard.synchronize()
     }
     
