@@ -7,7 +7,7 @@ import Observation
 class VerificationViewModel {
     private let authService = AuthService()
     var verificationCode: [String] = Array(repeating: "", count: 6)
-    var timeRemaining = 300
+    var timeRemaining = 180
     var timer: Timer?
     var canResendCode = false
     var email: String
@@ -27,7 +27,7 @@ class VerificationViewModel {
     // MARK: - Timer Management
     func startTimer() {
         canResendCode = false
-        timeRemaining = 5
+        timeRemaining = 180
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
@@ -87,7 +87,8 @@ class VerificationViewModel {
                 : authService.verifyRegistration(email: email, password: password, token: code)
 
             if !response.success {
-                errorMessage = response.error ?? "Ошибка верификации"
+                errorMessage = "Неверный код подтверждения"
+                clearVerificationCode()
                 return nil
             }
 
@@ -99,7 +100,8 @@ class VerificationViewModel {
             return userData
 
         } catch {
-            errorMessage = error.localizedDescription
+            errorMessage = "Неверный код подтверждения"
+            clearVerificationCode()
             return nil
         }
     }
@@ -126,5 +128,10 @@ class VerificationViewModel {
         if canResendCode {
             startTimer()
         }
+    }
+
+    // MARK: - Helper Methods
+    private func clearVerificationCode() {
+        verificationCode = Array(repeating: "", count: 6)
     }
 }

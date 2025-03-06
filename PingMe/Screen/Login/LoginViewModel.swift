@@ -20,6 +20,10 @@ class LoginViewModel {
     var isFromLogin: Bool = true
     private let authService = AuthService()
     var errorMessage: String?
+    var emailErrorMessage: String = ""
+    var passwordErrorMessage: String = ""
+    var showAlert: Bool = false
+    var alertMessage: String = ""
 
     // MARK: - Initialization
     init(email: String = "", password: String = "", isFromLogin: Bool) {
@@ -35,14 +39,12 @@ class LoginViewModel {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         isValidEmail = emailPredicate.evaluate(with: email)
+        emailErrorMessage = isValidEmail ? "" : "Неверный формат email"
     }
 
     func validatePassword() {
-        if password.count >= 8 {
-            isValidPassword = true
-        } else {
-            isValidPassword = false
-        }
+        isValidPassword = password.count >= 8
+        passwordErrorMessage = isValidPassword ? "" : "Пароль должен содержать минимум 8 символов"
     }
 
     // MARK: - Authentication Methods
@@ -60,6 +62,8 @@ class LoginViewModel {
 
         } catch {
             errorMessage = error.localizedDescription
+            showAlert = true
+            alertMessage = "Неверный email или пароль"
         }
     }
 }

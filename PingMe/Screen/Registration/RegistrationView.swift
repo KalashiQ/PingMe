@@ -68,6 +68,13 @@ struct RegistrationView: View {
                                         RoundedRectangle(cornerRadius: 8).stroke(
                                             viewModel.isValidUsername ? Color.black : Color.red,
                                             lineWidth: 1))
+                                if !viewModel.usernameErrorMessage.isEmpty {
+                                    Text(viewModel.usernameErrorMessage)
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 16)
+                                        .padding(.top, 4)
+                                }
                             }
 
                             VStack(alignment: .leading, spacing: 0) {
@@ -93,6 +100,13 @@ struct RegistrationView: View {
                                         RoundedRectangle(cornerRadius: 8).stroke(
                                             viewModel.isValidEmail ? Color.black : Color.red,
                                             lineWidth: 1))
+                                if !viewModel.emailErrorMessage.isEmpty {
+                                    Text(viewModel.emailErrorMessage)
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 16)
+                                        .padding(.top, 4)
+                                }
                             }
 
                             VStack(alignment: .leading, spacing: 0) {
@@ -119,6 +133,13 @@ struct RegistrationView: View {
                                         RoundedRectangle(cornerRadius: 8).stroke(
                                             viewModel.isValidPassword ? Color.black : Color.red,
                                             lineWidth: 1))
+                                if !viewModel.passwordErrorMessage.isEmpty {
+                                    Text(viewModel.passwordErrorMessage)
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 16)
+                                        .padding(.top, 4)
+                                }
                             }
 
                             VStack(alignment: .leading, spacing: 0) {
@@ -145,6 +166,13 @@ struct RegistrationView: View {
                                         RoundedRectangle(cornerRadius: 8).stroke(
                                             viewModel.isValidPasswordMatch
                                                 ? Color.black : Color.red, lineWidth: 1))
+                                if !viewModel.confirmPasswordErrorMessage.isEmpty {
+                                    Text(viewModel.confirmPasswordErrorMessage)
+                                        .font(.caption)
+                                        .foregroundColor(.red)
+                                        .padding(.leading, 16)
+                                        .padding(.top, 4)
+                                }
                             }
                         }
                         .frame(maxWidth: .infinity, alignment: .center)

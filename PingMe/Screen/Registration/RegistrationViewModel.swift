@@ -18,6 +18,10 @@ class RegistrationViewModel {
     var onBack: (() -> Void)?
     var isFromLogin: Bool = false
     var errorMessage: String?
+    var usernameErrorMessage: String = ""
+    var emailErrorMessage: String = ""
+    var passwordErrorMessage: String = ""
+    var confirmPasswordErrorMessage: String = ""
 
     // MARK: - Initialization
     init(
@@ -36,31 +40,27 @@ class RegistrationViewModel {
     }
 
     // MARK: - Validation Methods
-    func validateEmail() {
-        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
-        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
-        isValidEmail = emailPredicate.evaluate(with: email)
-    }
-
-    func validatePassword() {
-        if password.count >= 8 {
-            isValidPassword = true
-        } else {
-            isValidPassword = false
-        }
-    }
-
     func validateUsername() {
         let usernameRegex = "^@[A-Za-z][A-Za-z0-9]{5,}$"
         let usernamePredicate = NSPredicate(format: "SELF MATCHES %@", usernameRegex)
         isValidUsername = usernamePredicate.evaluate(with: username)
+        usernameErrorMessage = isValidUsername ? "" : "Используйте '@' и минимум 6 символов"
     }
-
+    func validateEmail() {
+        let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
+        let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
+        isValidEmail = emailPredicate.evaluate(with: email)
+        emailErrorMessage = isValidEmail ? "" : "Неверный формат email"
+    }
+    func validatePassword() {
+        isValidPassword = password.count >= 8
+        passwordErrorMessage = isValidPassword ? "" : "Пароль должен содержать минимум 8 символов"
+    }
     func validatePasswordMatch() {
         isValidPasswordMatch =
             !password.isEmpty && !confirmPassword.isEmpty && password == confirmPassword
+        confirmPasswordErrorMessage = isValidPasswordMatch ? "" : "Пароли должны совпадать"
     }
-
     func isValidForm() -> Bool {
         isValidEmail && isValidPassword && isValidPasswordMatch && isValidUsername && !email.isEmpty
             && !password.isEmpty && !confirmPassword.isEmpty && !username.isEmpty

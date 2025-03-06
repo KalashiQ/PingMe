@@ -46,6 +46,14 @@ struct LoginView: View {
                                     RoundedRectangle(cornerRadius: 8).stroke(
                                         viewModel.isValidEmail ? Color.black : Color.red,
                                         lineWidth: 1))
+
+                            if !viewModel.emailErrorMessage.isEmpty {
+                                Text(viewModel.emailErrorMessage)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                                    .padding(.leading, 16)
+                                    .padding(.top, 4)
+                            }
                         }
 
                         VStack(alignment: .leading, spacing: 0) {
@@ -71,6 +79,14 @@ struct LoginView: View {
                                     RoundedRectangle(cornerRadius: 8).stroke(
                                         viewModel.isValidPassword ? Color.black : Color.red,
                                         lineWidth: 1))
+
+                            if !viewModel.passwordErrorMessage.isEmpty {
+                                Text(viewModel.passwordErrorMessage)
+                                    .font(.caption)
+                                    .foregroundColor(.red)
+                                    .padding(.leading, 16)
+                                    .padding(.top, 4)
+                            }
                         }
                     }
                     .frame(maxWidth: .infinity, alignment: .center)
@@ -175,6 +191,11 @@ struct LoginView: View {
                 .opacity(1 - viewModel.contentOpacity)
             }
         }
+        .alert("Ошибка", isPresented: $viewModel.showAlert) {
+            Button("OK", role: .cancel) {}
+        } message: {
+            Text(viewModel.alertMessage)
+        }
     }
 
     // MARK: - Animation Functions
@@ -200,9 +221,8 @@ struct LoginView: View {
         if viewModel.isValidEmail && viewModel.isValidPassword {
             Task {
                 await viewModel.login()
-                if viewModel.errorMessage == nil {
-                    startTransitionAnimation(for: true)
-                }
+                guard viewModel.errorMessage == nil && !viewModel.showAlert else { return }
+                startTransitionAnimation(for: true)
             }
         }
     }
