@@ -2,17 +2,15 @@ import SwiftUI
 
 struct ChatsView: View {
     @State private var viewModel = ChatsViewModel()
-    
     var body: some View {
         NavigationStack {
             ZStack {
                 VStack(spacing: 0) {
                     header
-                    
                     ScrollView {
                         VStack(spacing: 0) {
                             storiesSection
-                            
+
                             chatsList
                         }
                     }
@@ -20,7 +18,7 @@ struct ChatsView: View {
                 .overlay(alignment: .bottomTrailing) {
                     newChatButton
                 }
-                
+
                 if viewModel.isSlideBarShowing {
                     SlideBarView(
                         isShowing: $viewModel.isSlideBarShowing,
@@ -36,25 +34,25 @@ struct ChatsView: View {
             }
         }
     }
-    
+
     private var header: some View {
         HStack {
-            Button(action: { 
+            Button(action: {
                 viewModel.isSlideBarShowing.toggle()
             }) {
                 Image(systemName: "line.3.horizontal")
                     .font(.title2)
                     .foregroundColor(.black)
             }
-            
+
             Spacer()
-            
+
             Text("PingMe")
                 .font(.title2)
                 .bold()
-            
+
             Spacer()
-            
+
             Button(action: {}) {
                 Image(systemName: "bell")
                     .font(.title2)
@@ -64,7 +62,7 @@ struct ChatsView: View {
         .padding()
         .background(Color(hex: "#CADDAD"))
     }
-    
+
     private var storiesSection: some View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -72,7 +70,7 @@ struct ChatsView: View {
                     if let currentUser = viewModel.currentUser {
                         StoryView(story: currentUser, isCurrentUser: true)
                     }
-                    
+
                     ForEach(viewModel.stories) { story in
                         StoryView(story: story)
                     }
@@ -81,7 +79,7 @@ struct ChatsView: View {
             }
         }
     }
-    
+
     private var chatsList: some View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.chats) { chat in
@@ -89,14 +87,14 @@ struct ChatsView: View {
                     ChatRowView(chat: chat)
                         .padding(.horizontal)
                         .padding(.vertical, 8)
-                    
+
                     Divider()
                         .background(Color(uiColor: .systemGray5))
                 }
             }
         }
     }
-    
+
     private var newChatButton: some View {
         Button(action: {}) {
             Image(systemName: "plus")
@@ -114,14 +112,14 @@ struct ChatsView: View {
 struct StoryView: View {
     let story: Story
     var isCurrentUser: Bool = false
-    
+
     var body: some View {
         VStack {
             ZStack {
                 Circle()
                     .fill(Color(uiColor: .systemGray5))
                     .frame(width: 60, height: 60)
-                
+
                 if isCurrentUser {
                     Button(action: {}) {
                         Image(systemName: "plus")
@@ -131,10 +129,10 @@ struct StoryView: View {
                             .background(Color.black)
                             .clipShape(Circle())
                             .position(x: 50, y: 47)
-                        }
                     }
+                }
             }
-            
+
             Text(story.username)
                 .font(.caption)
                 .lineLimit(1)
@@ -144,25 +142,25 @@ struct StoryView: View {
 
 struct ChatRowView: View {
     let chat: Chat
-    
+
     var body: some View {
         NavigationLink(destination: ChatView(recipientName: chat.username)) {
             HStack(spacing: 12) {
                 Circle()
                     .fill(Color(uiColor: .systemGray5))
                     .frame(width: 50, height: 50)
-                
+
                 VStack(alignment: .leading, spacing: 4) {
                     Text(chat.username)
                         .font(.system(size: 16, weight: .semibold))
-                    
+
                     Text(chat.lastMessage)
                         .font(.system(size: 14))
                         .foregroundColor(.gray)
                 }
-                
+
                 Spacer()
-                
+
                 Text(chat.lastMessageTime.formattedTime())
                     .font(.system(size: 14))
                     .foregroundColor(.gray)
@@ -170,7 +168,7 @@ struct ChatRowView: View {
             .foregroundColor(.black)
         }
     }
-    
+
 }
 
 #Preview {

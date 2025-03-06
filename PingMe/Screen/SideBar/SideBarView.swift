@@ -14,12 +14,12 @@ struct SlideBarView: View {
     let username: String
     @AppStorage("isDarkMode") private var isDarkMode = false
     var activeScreen: ActiveScreen?
-    var onNavigate: ((ActiveScreen) -> Void)? = nil
-    
+    var onNavigate: ((ActiveScreen) -> Void)?
+
     private func isActive(_ screen: ActiveScreen) -> Bool {
         return activeScreen == screen
     }
-    
+
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -29,14 +29,14 @@ struct SlideBarView: View {
                     .onTapGesture {
                         isShowing = false
                     }
-                
+
                 HStack(spacing: 0) {
                     VStack(spacing: 24) {
                         HStack(spacing: 16) {
                             Circle()
                                 .fill(Color(hex: "#CADDAD"))
                                 .frame(width: 60, height: 60)
-                            
+
                             VStack(alignment: .leading, spacing: 4) {
                                 Text(currentUserName)
                                     .font(.system(size: 16, weight: .semibold))
@@ -45,13 +45,13 @@ struct SlideBarView: View {
                                     .font(.system(size: 14))
                                     .foregroundColor(.gray)
                             }
-                            
+
                             Spacer()
                         }
                         .padding(.top, 100)
-                        
+
                         VStack(spacing: 12) {
-                            Button(action: { 
+                            Button(action: {
                                 onNavigate?(.chats)
                                 isShowing = false
                             }) {
@@ -66,7 +66,7 @@ struct SlideBarView: View {
                                 .background(isActive(.chats) ? Color(hex: "#CADDAD") : Color.black)
                                 .cornerRadius(12)
                             }
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "person.fill")
@@ -76,10 +76,12 @@ struct SlideBarView: View {
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(isActive(.profile) ? Color(hex: "#CADDAD") : Color.black)
+                                .background(
+                                    isActive(.profile) ? Color(hex: "#CADDAD") : Color.black
+                                )
                                 .cornerRadius(12)
                             }
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "person.2.fill")
@@ -89,10 +91,12 @@ struct SlideBarView: View {
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(isActive(.suddenMeet) ? Color(hex: "#CADDAD") : Color.black)
+                                .background(
+                                    isActive(.suddenMeet) ? Color(hex: "#CADDAD") : Color.black
+                                )
                                 .cornerRadius(12)
                             }
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "location.circle.fill")
@@ -105,7 +109,7 @@ struct SlideBarView: View {
                                 .background(isActive(.pingMe) ? Color(hex: "#CADDAD") : Color.black)
                                 .cornerRadius(12)
                             }
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "gearshape.fill")
@@ -115,17 +119,19 @@ struct SlideBarView: View {
                                 }
                                 .foregroundColor(.white)
                                 .padding()
-                                .background(isActive(.settings) ? Color(hex: "#CADDAD") : Color.black)
+                                .background(
+                                    isActive(.settings) ? Color(hex: "#CADDAD") : Color.black
+                                )
                                 .cornerRadius(12)
                             }
                         }
-                        
+
                         Spacer()
-                        
+
                         Divider()
                             .background(Color.gray)
                             .padding(.horizontal, -20)
-                        
+
                         VStack(spacing: 16) {
                             Toggle(isOn: $isDarkMode) {
                                 HStack {
@@ -136,7 +142,7 @@ struct SlideBarView: View {
                             }
                             .toggleStyle(SwitchToggleStyle(tint: Color(hex: "#CADDAD")))
                             .foregroundColor(.white)
-                            
+
                             Button(action: {}) {
                                 HStack {
                                     Image(systemName: "rectangle.portrait.and.arrow.right")
@@ -159,7 +165,7 @@ struct SlideBarView: View {
                             .fill(Color.black)
                             .padding(.leading, -50)
                     )
-                    
+
                     Spacer(minLength: 0)
                 }
                 .offset(x: isShowing ? 0 : -min(geometry.size.width * 0.8, 300) - 50)

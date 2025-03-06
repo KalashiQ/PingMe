@@ -7,8 +7,11 @@ struct Chat: Identifiable {
     let lastMessageTime: Date
     let avatarUrl: String?
     let isGroup: Bool
-    
-    init(id: UUID = UUID(), username: String, lastMessage: String, lastMessageTime: Date, avatarUrl: String? = nil, isGroup: Bool = false) {
+
+    init(
+        id: UUID = UUID(), username: String, lastMessage: String, lastMessageTime: Date,
+        avatarUrl: String? = nil, isGroup: Bool = false
+    ) {
         self.id = id
         self.username = username
         self.lastMessage = lastMessage
@@ -16,4 +19,4 @@ struct Chat: Identifiable {
         self.avatarUrl = avatarUrl
         self.isGroup = isGroup
     }
-} 
+}

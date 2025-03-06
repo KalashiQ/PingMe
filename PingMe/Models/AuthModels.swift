@@ -46,7 +46,7 @@ struct User: Codable {
     let mailingMethod: String
     let createdAt: Date
     let updatedAt: Date
-    
+
     enum CodingKeys: String, CodingKey {
         case id, email, name, username
         case phoneNumber = "phone_number"
@@ -67,7 +67,7 @@ struct Tokens: Codable {
 struct TokenInfo: Codable {
     let token: String
     let expiresAt: Date
-    
+
     enum CodingKeys: String, CodingKey {
         case token
         case expiresAt = "expires_at"
@@ -77,4 +77,4 @@ struct TokenInfo: Codable {
 struct VerifyResponseData: Codable {
     let user: User
     let tokens: Tokens
-} 
+}
