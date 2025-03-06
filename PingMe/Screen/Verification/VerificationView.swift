@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Main View
 struct VerificationView: View {
     @State private var viewModel: VerificationViewModel
     @Environment(\.dismiss) private var dismiss
@@ -13,6 +14,7 @@ struct VerificationView: View {
     @Environment(\.presentationMode) var presentationMode
     private let password: String
 
+    // MARK: - Initialization
     init(
         email: String,
         password: String,
@@ -34,6 +36,7 @@ struct VerificationView: View {
         self.viewModel.onBack = onBack
     }
 
+    // MARK: - Body View
     var body: some View {
         ZStack {
             VStack(alignment: .leading, spacing: 20) {
@@ -87,25 +90,19 @@ struct VerificationView: View {
                 Button(action: {
                     Task {
                         do {
-                            print("\n=== Verification Button Pressed ===")
                             if let userData = try await viewModel.verifyCode() {
                                 viewModel.saveUserData(userData)
-
                                 presentationMode.wrappedValue.dismiss()
 
                                 DispatchQueue.main.async {
-                                    if let windowScene = UIApplication.shared.connectedScenes.first
-                                        as? UIWindowScene,
-                                        let window = windowScene.windows.first {
+                                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                       let window = windowScene.windows.first {
                                         withAnimation {
-                                            window.rootViewController = UIHostingController(
-                                                rootView: ChatsView())
+                                            window.rootViewController = UIHostingController(rootView: ChatsView())
                                             window.makeKeyAndVisible()
                                         }
                                     }
                                 }
-                            } else {
-                                print("❌ No user data received after successful verification")
                             }
                         } catch {
                             errorMessage = error.localizedDescription
@@ -152,6 +149,7 @@ struct VerificationView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     VerificationView(
         email: "",

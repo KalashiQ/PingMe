@@ -2,6 +2,7 @@ import CoreFoundation
 import Foundation
 import Observation
 
+// MARK: - View Model
 @Observable
 class VerificationViewModel {
     private let authService = AuthService()
@@ -15,13 +16,14 @@ class VerificationViewModel {
     var username: String = ""
     var isFromLogin: Bool
 
+    // MARK: - Initialization
     init(email: String, password: String, isFromLogin: Bool) {
         self.email = email
         self.password = password
         self.isFromLogin = isFromLogin
-        print("VerificationViewModel initialized with isFromLogin: \(isFromLogin)")
     }
 
+    // MARK: - Timer Management
     func startTimer() {
         canResendCode = false
         timeRemaining = 5
@@ -43,6 +45,7 @@ class VerificationViewModel {
         return String(format: "%d:%02d", minutes, seconds)
     }
 
+    // MARK: - Input Handling
     func handleCodeInput(at index: Int, newValue: String) -> Int? {
         if newValue.count > 1 {
             verificationCode[index] = String(newValue.prefix(1))
@@ -62,73 +65,36 @@ class VerificationViewModel {
         return nil
     }
 
+    // MARK: - Lifecycle Methods
     func onDisappear() {
         timer?.invalidate()
     }
 
+    // MARK: - Authentication Methods
     @MainActor
     func verifyCode() async throws -> VerifyResponseData? {
         let code = verificationCode.joined()
 
-        print("\n=== Verification Process Debug ===")
-        print("Step 1: Input Validation")
-        print("Email: \(email)")
-        print("Password: [HIDDEN]")
-        print("Verification code: \(code)")
-        print("Code array state: \(verificationCode)")
-
         guard code.count == 6 else {
-            print("❌ Validation Failed: Code length is not 6 digits")
             throw AuthError.serverError("Код должен состоять из 6 цифр")
         }
 
-        print("✅ Input Validation Passed")
+        let response = try await isFromLogin
+            ? authService.verifyLogin(email: email, password: password, token: code)
+            : authService.verifyRegistration(email: email, password: password, token: code)
 
-        do {
-            print("\nStep 2: Sending Request")
-            print("Calling verify\(isFromLogin ? "Login" : "Registration") with:")
-            print("- Email: \(email)")
-            print("- Code: \(code)")
-
-            let response =
-                try await isFromLogin
-                ? authService.verifyLogin(email: email, password: password, token: code)
-                : authService.verifyRegistration(email: email, password: password, token: code)
-
-            print("\nStep 3: Processing Response")
-            print("Response received:")
-            print("- Success: \(response.success)")
-            print("- Message: \(response.message ?? "No message")")
-            print("- Error: \(response.error ?? "No error")")
-            print("- Has Data: \(response.data != nil)")
-
-            if response.success {
-                if let userData = response.data {
-                    print("✅ Verification Successful!")
-                    print("User Data received:")
-                    print("- User ID: \(userData.user.id)")
-                    print("- Email: \(userData.user.email)")
-                    print("- Name: \(userData.user.name)")
-                    return userData
-                } else {
-                    print("❌ Error: Response success but no user data")
-                    throw AuthError.serverError("Успешный ответ без данных пользователя")
-                }
+        if response.success {
+            if let userData = response.data {
+                return userData
             } else {
-                print("❌ Error: Server returned failure")
-                throw AuthError.serverError(response.error ?? "Ошибка верификации")
+                throw AuthError.serverError("Успешный ответ без данных пользователя")
             }
-        } catch {
-            print("\n❌ Error Occurred:")
-            print("Error type: \(type(of: error))")
-            print("Error description: \(error.localizedDescription)")
-            if let authError = error as? AuthError {
-                print("AuthError details: \(authError)")
-            }
-            throw error
+        } else {
+            throw AuthError.serverError(response.error ?? "Ошибка верификации")
         }
     }
 
+    // MARK: - Data Management
     func saveUserData(_ userData: VerifyResponseData) {
         UserDefaults.standard.set(userData.tokens.access.token, forKey: "accessToken")
         UserDefaults.standard.set(userData.tokens.refresh.token, forKey: "refreshToken")
@@ -145,6 +111,7 @@ class VerificationViewModel {
         UserDefaults.standard.synchronize()
     }
 
+    // MARK: - Code Resend
     func resendCode() {
         if canResendCode {
             startTimer()

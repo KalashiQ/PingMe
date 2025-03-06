@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+// MARK: - View Model
 @Observable
 class ChatsViewModel {
     var chats: [Chat] = []
@@ -10,10 +11,12 @@ class ChatsViewModel {
     var currentUserName: String = "Имя пользователя"
     var username: String = "username"
 
+    // MARK: - Initialization
     init() {
         setupMockData()
     }
 
+    // MARK: - Mock Data Setup
     private func setupMockData() {
         currentUser = Story(username: "My name", avatarUrl: nil)
 

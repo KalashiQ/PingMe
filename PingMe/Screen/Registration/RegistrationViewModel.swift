@@ -2,6 +2,7 @@ import CoreFoundation
 import Foundation
 import Observation
 
+// MARK: - View Model
 @Observable
 class RegistrationViewModel {
     private let authService = AuthService()
@@ -17,8 +18,11 @@ class RegistrationViewModel {
     var onBack: (() -> Void)?
     var isFromLogin: Bool = false
 
+    // MARK: - Initialization
     init(
-        email: String = "", password: String = "", confirmPassword: String = "",
+        email: String = "",
+        password: String = "",
+        confirmPassword: String = "",
         isFromLogin: Bool = false
     ) {
         self.email = email
@@ -30,6 +34,7 @@ class RegistrationViewModel {
 
     }
 
+    // MARK: - Validation Methods
     func validateEmail() {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
@@ -60,6 +65,7 @@ class RegistrationViewModel {
             && !password.isEmpty && !confirmPassword.isEmpty && !username.isEmpty
     }
 
+    // MARK: - Authentication Methods
     @MainActor
     func register() async throws {
         do {

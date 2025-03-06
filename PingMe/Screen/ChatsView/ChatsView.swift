@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Main View
 struct ChatsView: View {
     @State private var viewModel = ChatsViewModel()
     var body: some View {
@@ -35,6 +36,7 @@ struct ChatsView: View {
         }
     }
 
+    // MARK: - UI Components
     private var header: some View {
         HStack {
             Button(action: {
@@ -63,6 +65,7 @@ struct ChatsView: View {
         .background(Color(hex: "#CADDAD"))
     }
 
+    // MARK: - Stories Section
     private var storiesSection: some View {
         VStack(spacing: 0) {
             ScrollView(.horizontal, showsIndicators: false) {
@@ -80,6 +83,7 @@ struct ChatsView: View {
         }
     }
 
+    // MARK: - Chats List
     private var chatsList: some View {
         LazyVStack(spacing: 0) {
             ForEach(viewModel.chats) { chat in
@@ -95,6 +99,7 @@ struct ChatsView: View {
         }
     }
 
+    // MARK: - New Chat Button
     private var newChatButton: some View {
         Button(action: {}) {
             Image(systemName: "plus")
@@ -108,7 +113,7 @@ struct ChatsView: View {
     }
 }
 
-// MARK: - Functions
+// MARK: - Story Component
 struct StoryView: View {
     let story: Story
     var isCurrentUser: Bool = false
@@ -140,6 +145,7 @@ struct StoryView: View {
     }
 }
 
+// MARK: - Chat Row Component
 struct ChatRowView: View {
     let chat: Chat
 
@@ -168,9 +174,9 @@ struct ChatRowView: View {
             .foregroundColor(.black)
         }
     }
-
 }
 
+// MARK: - Preview
 #Preview {
     ChatsView()
 }

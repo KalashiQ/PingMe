@@ -1,8 +1,12 @@
 import SwiftUI
 
+// MARK: - Main View
 struct LoginView: View {
     @State private var viewModel = LoginViewModel(
-        email: "Kalashiq.org@gmail.com", password: "Password#123", isFromLogin: true)
+        email: "Kalashiq.org@gmail.com",
+        password: "Password#123",
+        isFromLogin: true
+    )
 
     var body: some View {
         ZStack {
@@ -173,7 +177,7 @@ struct LoginView: View {
         }
     }
 
-    // MARK: - Functions for Animation
+    // MARK: - Animation Functions
     private func startTransitionAnimation(for login: Bool) {
         if login {
             viewModel.isAnimatingLogin = true
@@ -188,6 +192,7 @@ struct LoginView: View {
         }
     }
 
+    // MARK: - Button Handlers
     private func handleLoginButton() {
         viewModel.validateEmail()
         viewModel.validatePassword()
@@ -198,7 +203,6 @@ struct LoginView: View {
                     try await viewModel.login()
                     startTransitionAnimation(for: true)
                 } catch {
-                    // Handle error - you might want to add an alert state to your ViewModel
                     print("Login error: \(error)")
                 }
             }
@@ -211,6 +215,7 @@ struct LoginView: View {
 
 }
 
+// MARK: - Preview
 #Preview {
     LoginView()
 }

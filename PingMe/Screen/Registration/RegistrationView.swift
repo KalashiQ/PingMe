@@ -1,9 +1,14 @@
 import SwiftUI
 
+// MARK: - Main View
 struct RegistrationView: View {
     @State private var viewModel = RegistrationViewModel(
-        email: "Kalashiq.org@gmail.com", password: "Password#123", confirmPassword: "Password#123",
-        isFromLogin: false)
+        email: "Kalashiq.org@gmail.com",
+        password: "Password#123",
+        confirmPassword: "Password#123",
+        isFromLogin: false
+    )
+
     @Environment(\.dismiss) private var dismiss
     @Binding var contentOpacity: Double
     @Binding var backgroundHeight: CGFloat
@@ -202,6 +207,7 @@ struct RegistrationView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     RegistrationView(
         contentOpacity: .constant(0),

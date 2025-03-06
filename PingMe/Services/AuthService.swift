@@ -1,5 +1,6 @@
 import Foundation
 
+// MARK: - Error Types
 enum AuthError: Error {
     case invalidURL
     case networkError(Error)
@@ -8,9 +9,11 @@ enum AuthError: Error {
     case serverError(String)
 }
 
+// MARK: - Auth Service
 class AuthService {
     private let baseURL = "http://localhost:8000"
 
+    // MARK: - Public Methods
     func register(email: String, password: String, name: String) async throws -> APIResponse<
         RegisterResponseData
     > {
@@ -19,7 +22,8 @@ class AuthService {
     }
 
     func verifyRegistration(email: String, password: String, token: String) async throws
-        -> APIResponse<VerifyResponseData> {
+        -> APIResponse<VerifyResponseData>
+    {
         let request = VerifyRegistrationRequest(email: email, password: password, token: token)
         return try await performRequest(endpoint: "/api/v1/auth/verify-registration", body: request)
     }
@@ -36,39 +40,20 @@ class AuthService {
         return try await performRequest(endpoint: "/api/v1/auth/verify-login", body: request)
     }
 
+    // MARK: - Private Methods
     private func performRequest<T: Codable, R: Codable>(endpoint: String, body: T) async throws
-        -> APIResponse<R> {
+        -> APIResponse<R>
+    {
         guard let url = URL(string: baseURL + endpoint) else {
-            print("Invalid URL: \(baseURL + endpoint)")
             throw AuthError.invalidURL
         }
 
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         request.setValue("application/json", forHTTPHeaderField: "Content-Type")
-
-        let jsonData = try JSONEncoder().encode(body)
-        request.httpBody = jsonData
-
-        // Отладочная информация запроса
-        print("=== Request Debug Info ===")
-        print("URL: \(url)")
-        print("Method: \(request.httpMethod ?? "Unknown")")
-        print("Headers: \(request.allHTTPHeaderFields ?? [:])")
-        if let jsonString = String(data: jsonData, encoding: .utf8) {
-            print("Request Body: \(jsonString)")
-        }
-        print("=======================")
+        request.httpBody = try JSONEncoder().encode(body)
 
         let (data, response) = try await URLSession.shared.data(for: request)
-
-        // Отладочная информация ответа
-        print("=== Response Debug Info ===")
-        print("Status Code: \((response as? HTTPURLResponse)?.statusCode ?? 0)")
-        if let jsonString = String(data: data, encoding: .utf8) {
-            print("Response Body: \(jsonString)")
-        }
-        print("========================")
 
         guard let httpResponse = response as? HTTPURLResponse else {
             throw AuthError.invalidResponse
@@ -80,19 +65,14 @@ class AuthService {
         }
 
         let decoder = JSONDecoder()
-
-        // Создаем форматтер даты
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSSSSS"
-        dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
-        dateFormatter.locale = Locale(identifier: "en_US_POSIX")
-
-        // Устанавливаем кастомную стратегию декодирования даты
         decoder.dateDecodingStrategy = .custom { decoder in
             let container = try decoder.singleValueContainer()
             let dateString = try container.decode(String.self)
 
-            // Пробуем разные форматы даты
+            let dateFormatter = DateFormatter()
+            dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
+            dateFormatter.locale = Locale(identifier: "en_US_POSIX")
+
             let formats = [
                 "yyyy-MM-dd'T'HH:mm:ss.SSSSSS",
                 "yyyy-MM-dd'T'HH:mm:ss.SSSSSZ",
@@ -116,15 +96,12 @@ class AuthService {
         do {
             return try decoder.decode(APIResponse<R>.self, from: data)
         } catch {
-            print("Decoding error: \(error)")
-            print(
-                "Failed to decode data: \(String(data: data, encoding: .utf8) ?? "Unable to read data")"
-            )
             throw AuthError.decodingError
         }
     }
 }
 
+// MARK: - Supporting Types
 struct ValidationErrorDetail: Codable {
     let loc: [String]
     let msg: String

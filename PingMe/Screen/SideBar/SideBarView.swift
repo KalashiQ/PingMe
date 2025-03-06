@@ -1,5 +1,6 @@
 import SwiftUI
 
+// MARK: - Screen Enumeration
 enum ActiveScreen {
     case chats
     case suddenMeet
@@ -8,6 +9,7 @@ enum ActiveScreen {
     case profile
 }
 
+// MARK: - Main View
 struct SlideBarView: View {
     @Binding var isShowing: Bool
     let currentUserName: String
@@ -16,10 +18,12 @@ struct SlideBarView: View {
     var activeScreen: ActiveScreen?
     var onNavigate: ((ActiveScreen) -> Void)?
 
+    // MARK: - Active Screen
     private func isActive(_ screen: ActiveScreen) -> Bool {
         return activeScreen == screen
     }
 
+    // MARK: - Body View
     var body: some View {
         GeometryReader { geometry in
             ZStack(alignment: .leading) {
@@ -175,6 +179,7 @@ struct SlideBarView: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     SlideBarView(
         isShowing: .constant(true),

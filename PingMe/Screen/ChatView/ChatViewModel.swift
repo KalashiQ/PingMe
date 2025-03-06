@@ -1,6 +1,7 @@
 import Foundation
 import Observation
 
+// MARK: - View Model
 @Observable
 class ChatViewModel {
     var messages: [Message] = []
@@ -8,12 +9,14 @@ class ChatViewModel {
     var isRecipientOnline: Bool
     var newMessageText: String = ""
 
+    // MARK: - Initialization
     init(recipientName: String, isRecipientOnline: Bool = true) {
         self.recipientName = recipientName
         self.isRecipientOnline = isRecipientOnline
         setupMockMessages()
     }
 
+    // MARK: - Message Management
     func sendMessage() {
         guard !newMessageText.isEmpty else { return }
 
@@ -26,6 +29,7 @@ class ChatViewModel {
         newMessageText = ""
     }
 
+    // MARK: - Mock Data Setup
     private func setupMockMessages() {
         messages = [
             Message(

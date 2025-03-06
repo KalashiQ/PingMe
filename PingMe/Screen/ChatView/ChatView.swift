@@ -1,10 +1,12 @@
 import SwiftUI
 
+// MARK: - Main View
 struct ChatView: View {
     @State private var viewModel: ChatViewModel
     @Environment(\.dismiss) private var dismiss
     @FocusState private var isInputFocused: Bool
 
+    // MARK: - Initialization
     init(recipientName: String) {
         _viewModel = State(initialValue: ChatViewModel(recipientName: recipientName))
     }
@@ -37,6 +39,7 @@ struct ChatView: View {
         .navigationBarHidden(true)
     }
 
+    // MARK: - UI Components
     private var header: some View {
         HStack(spacing: 16) {
             Button(action: { dismiss() }) {
@@ -81,6 +84,7 @@ struct ChatView: View {
         .background(Color(hex: "#CADDAD"))
     }
 
+    // MARK: - Chat Content
     private var chatContent: some View {
         LazyVStack(spacing: 12) {
             ForEach(viewModel.messages) { message in
@@ -90,6 +94,7 @@ struct ChatView: View {
         .padding()
     }
 
+    // MARK: - Message Input
     private var messageInputField: some View {
         HStack(spacing: 12) {
             Button(action: {}) {
@@ -132,7 +137,7 @@ struct ChatView: View {
     }
 }
 
-// MARK: - Functions
+// MARK: - Message Bubble Component
 struct MessageBubble: View {
     let message: Message
 
@@ -161,6 +166,7 @@ struct MessageBubble: View {
     }
 }
 
+// MARK: - Preview
 #Preview {
     ChatView(recipientName: "Тестовый пользователь")
 }
