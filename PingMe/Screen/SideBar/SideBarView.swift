@@ -1,7 +1,7 @@
 import SwiftUI
 
 // MARK: - Screen Enumeration
-enum ActiveScreen {
+public enum ActiveScreen {
     case chats
     case suddenMeet
     case pingMe
@@ -11,12 +11,26 @@ enum ActiveScreen {
 
 // MARK: - Main View
 struct SlideBarView: View {
-    @Binding var isShowing: Bool
-    let currentUserName: String
-    let username: String
+    @Binding private var isShowing: Bool
+    private let currentUserName: String
+    private let username: String
     @AppStorage("isDarkMode") private var isDarkMode = false
-    var activeScreen: ActiveScreen?
-    var onNavigate: ((ActiveScreen) -> Void)?
+    private var activeScreen: ActiveScreen?
+    private var onNavigate: ((ActiveScreen) -> Void)?
+
+    init(
+        isShowing: Binding<Bool>,
+        currentUserName: String,
+        username: String,
+        activeScreen: ActiveScreen? = nil,
+        onNavigate: ((ActiveScreen) -> Void)? = nil
+    ) {
+        self._isShowing = isShowing
+        self.currentUserName = currentUserName
+        self.username = username
+        self.activeScreen = activeScreen
+        self.onNavigate = onNavigate
+    }
 
     // MARK: - Active Screen
     private func isActive(_ screen: ActiveScreen) -> Bool {
