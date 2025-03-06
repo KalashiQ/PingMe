@@ -89,23 +89,21 @@ struct VerificationView: View {
 
                 Button(action: {
                     Task {
-                        do {
-                            if let userData = try await viewModel.verifyCode() {
-                                viewModel.saveUserData(userData)
-                                presentationMode.wrappedValue.dismiss()
+                        if let userData = await viewModel.verifyCode() {
+                            viewModel.saveUserData(userData)
+                            presentationMode.wrappedValue.dismiss()
 
-                                DispatchQueue.main.async {
-                                    if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                       let window = windowScene.windows.first {
-                                        withAnimation {
-                                            window.rootViewController = UIHostingController(rootView: ChatsView())
-                                            window.makeKeyAndVisible()
-                                        }
+                            DispatchQueue.main.async {
+                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
+                                   let window = windowScene.windows.first {
+                                    withAnimation {
+                                        window.rootViewController = UIHostingController(rootView: ChatsView())
+                                        window.makeKeyAndVisible()
                                     }
                                 }
                             }
-                        } catch {
-                            errorMessage = error.localizedDescription
+                        } else if let error = viewModel.errorMessage {
+                            errorMessage = error
                             showError = true
                         }
                     }

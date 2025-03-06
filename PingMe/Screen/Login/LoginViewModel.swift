@@ -18,6 +18,8 @@ class LoginViewModel {
     var isAnimatingLogin: Bool = false
     var isAnimatingRegistration: Bool = false
     var isFromLogin: Bool = true
+    private let authService = AuthService()
+    var errorMessage: String?
 
     // MARK: - Initialization
     init(email: String = "", password: String = "", isFromLogin: Bool) {
@@ -45,20 +47,19 @@ class LoginViewModel {
 
     // MARK: - Authentication Methods
     @MainActor
-    func login() async throws {
-        let authService = AuthService()
-
+    func login() async {
         do {
             let response = try await authService.login(email: email, password: password)
 
             if !response.success {
-                throw AuthError.serverError(response.error ?? "Login failed")
+                errorMessage = response.error ?? "Login failed"
+                return
             }
 
             showVerification = true
 
         } catch {
-            throw error
+            errorMessage = error.localizedDescription
         }
     }
 }

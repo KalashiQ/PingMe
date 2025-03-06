@@ -17,6 +17,7 @@ class RegistrationViewModel {
     var showVerification: Bool = false
     var onBack: (() -> Void)?
     var isFromLogin: Bool = false
+    var errorMessage: String?
 
     // MARK: - Initialization
     init(
@@ -67,7 +68,7 @@ class RegistrationViewModel {
 
     // MARK: - Authentication Methods
     @MainActor
-    func register() async throws {
+    func register() async {
         do {
             let response = try await authService.register(
                 email: email,
@@ -75,21 +76,23 @@ class RegistrationViewModel {
                 name: username.replacingOccurrences(of: "@", with: "")
             )
 
-            if response.success {
-                print("Registration successful, setting isFromLogin to false")
-                isFromLogin = false
-                showVerification = true
-            } else {
-                throw AuthError.serverError(response.error ?? "Unknown error")
+            if !response.success {
+                errorMessage = response.error ?? "Registration failed"
+                return
             }
+
+            print("Registration successful, setting isFromLogin to false")
+            isFromLogin = false
+            showVerification = true
+
         } catch {
             print("Registration error: \(error)")
-            throw error
+            errorMessage = error.localizedDescription
         }
     }
 
     @MainActor
-    func verifyRegistration(token: String) async throws -> VerifyResponseData? {
+    func verifyRegistration(token: String) async -> VerifyResponseData? {
         do {
             isFromLogin = false
             let response = try await authService.verifyRegistration(
@@ -98,14 +101,17 @@ class RegistrationViewModel {
                 token: token
             )
 
-            if response.success {
-                return response.data
-            } else {
-                throw AuthError.serverError(response.error ?? "Unknown error")
+            if !response.success {
+                errorMessage = response.error ?? "Verification failed"
+                return nil
             }
+
+            return response.data
+
         } catch {
             print("Verification error: \(error)")
-            throw error
+            errorMessage = error.localizedDescription
+            return nil
         }
     }
 }

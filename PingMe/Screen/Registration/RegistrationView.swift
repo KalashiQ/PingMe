@@ -154,11 +154,7 @@ struct RegistrationView: View {
                             Button(action: {
                                 if viewModel.isValidForm() {
                                     Task {
-                                        do {
-                                            try await viewModel.register()
-                                        } catch {
-                                            print("Registration error: \(error)")
-                                        }
+                                        await viewModel.register()
                                     }
                                 }
                             }) {

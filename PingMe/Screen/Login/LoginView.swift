@@ -199,11 +199,9 @@ struct LoginView: View {
 
         if viewModel.isValidEmail && viewModel.isValidPassword {
             Task {
-                do {
-                    try await viewModel.login()
+                await viewModel.login()
+                if viewModel.errorMessage == nil {
                     startTransitionAnimation(for: true)
-                } catch {
-                    print("Login error: \(error)")
                 }
             }
         }

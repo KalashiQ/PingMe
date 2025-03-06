@@ -22,8 +22,7 @@ class AuthService {
     }
 
     func verifyRegistration(email: String, password: String, token: String) async throws
-        -> APIResponse<VerifyResponseData>
-    {
+        -> APIResponse<VerifyResponseData> {
         let request = VerifyRegistrationRequest(email: email, password: password, token: token)
         return try await performRequest(endpoint: "/api/v1/auth/verify-registration", body: request)
     }
@@ -42,8 +41,7 @@ class AuthService {
 
     // MARK: - Private Methods
     private func performRequest<T: Codable, R: Codable>(endpoint: String, body: T) async throws
-        -> APIResponse<R>
-    {
+        -> APIResponse<R> {
         guard let url = URL(string: baseURL + endpoint) else {
             throw AuthError.invalidURL
         }

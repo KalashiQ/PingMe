@@ -15,6 +15,7 @@ class VerificationViewModel {
     private let password: String
     var username: String = ""
     var isFromLogin: Bool
+    var errorMessage: String?
 
     // MARK: - Initialization
     init(email: String, password: String, isFromLogin: Bool) {
@@ -72,25 +73,34 @@ class VerificationViewModel {
 
     // MARK: - Authentication Methods
     @MainActor
-    func verifyCode() async throws -> VerifyResponseData? {
+    func verifyCode() async -> VerifyResponseData? {
         let code = verificationCode.joined()
 
-        guard code.count == 6 else {
-            throw AuthError.serverError("Код должен состоять из 6 цифр")
+        if code.count != 6 {
+            errorMessage = "Код должен состоять из 6 цифр"
+            return nil
         }
 
-        let response = try await isFromLogin
-            ? authService.verifyLogin(email: email, password: password, token: code)
-            : authService.verifyRegistration(email: email, password: password, token: code)
+        do {
+            let response = try await isFromLogin
+                ? authService.verifyLogin(email: email, password: password, token: code)
+                : authService.verifyRegistration(email: email, password: password, token: code)
 
-        if response.success {
-            if let userData = response.data {
-                return userData
-            } else {
-                throw AuthError.serverError("Успешный ответ без данных пользователя")
+            if !response.success {
+                errorMessage = response.error ?? "Ошибка верификации"
+                return nil
             }
-        } else {
-            throw AuthError.serverError(response.error ?? "Ошибка верификации")
+
+            guard let userData = response.data else {
+                errorMessage = "Успешный ответ без данных пользователя"
+                return nil
+            }
+
+            return userData
+
+        } catch {
+            errorMessage = error.localizedDescription
+            return nil
         }
     }
 
