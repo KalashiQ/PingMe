@@ -18,6 +18,7 @@ struct SlideBarView: View {
     private var activeScreen: ActiveScreen?
     private var onNavigate: ((ActiveScreen) -> Void)?
 
+    // MARK: - Initialization
     init(
         isShowing: Binding<Bool>,
         currentUserName: String,

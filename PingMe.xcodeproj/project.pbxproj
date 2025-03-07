@@ -192,6 +192,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				A18AC1132D76363E0070BE68 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				A116C89F2D7ADABB00F25995 /* XCRemoteSwiftPackageReference "keychain-swift" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A1D2C1182D574C89002E22C4;
@@ -560,6 +561,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		A116C89F2D7ADABB00F25995 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
 		A18AC1132D76363E0070BE68 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/realm/SwiftLint";

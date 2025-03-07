@@ -3,6 +3,8 @@ import SwiftUI
 // MARK: - Main View
 struct ChatsView: View {
     @State private var viewModel = ChatsViewModel()
+
+    // MARK: - Body View
     var body: some View {
         NavigationStack {
             ZStack {
@@ -121,6 +123,7 @@ struct StoryView: View {
     var body: some View {
         VStack {
             ZStack {
+
                 Circle()
                     .fill(Color(uiColor: .systemGray5))
                     .frame(width: 60, height: 60)

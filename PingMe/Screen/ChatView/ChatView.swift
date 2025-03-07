@@ -11,6 +11,7 @@ struct ChatView: View {
         _viewModel = State(initialValue: ChatViewModel(recipientName: recipientName))
     }
 
+    // MARK: - Body View
     var body: some View {
         VStack(spacing: 0) {
             header
