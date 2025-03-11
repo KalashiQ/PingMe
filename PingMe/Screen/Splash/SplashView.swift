@@ -9,7 +9,7 @@ struct SplashView: View {
     @State private var logoOpacity = 0.0
     @State private var taglineOffset = 20.0
     @State private var taglineOpacity = 0.0
-
+    @Environment(\.routinViewModel) private var routinViewModel
     var body: some View {
         ZStack {
             if !isActive {
@@ -44,10 +44,6 @@ struct SplashView: View {
                 }
                 .offset(y: -50)
             }
-
-            if isActive {
-                LoginView()
-            }
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.5)) {
@@ -76,6 +72,7 @@ struct SplashView: View {
                     bellsOpacity = 0
                     logoOpacity = 0
                     taglineOpacity = 0
+                    routinViewModel.navigateToScreen(.login)
                 }
             }
         }

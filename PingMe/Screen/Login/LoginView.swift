@@ -7,7 +7,6 @@ struct LoginView: View {
         password: "Password#123",
         isFromLogin: true
     )
-
     var body: some View {
         ZStack {
             BackgroundView(height: viewModel.backgroundHeight, width: viewModel.backgroundWidth)

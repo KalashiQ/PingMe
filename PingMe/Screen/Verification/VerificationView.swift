@@ -11,7 +11,7 @@ struct VerificationView: View {
     @FocusState private var focusedField: Int?
     @State private var showError = false
     @State private var errorMessage = ""
-    @Environment(\.presentationMode) var presentationMode
+    @Environment(\.routinViewModel) private var routinViewModel
     private let password: String
 
     // MARK: - Initialization
@@ -91,17 +91,7 @@ struct VerificationView: View {
                     Task {
                         if let userData = await viewModel.verifyCode() {
                             viewModel.saveUserData(userData)
-                            presentationMode.wrappedValue.dismiss()
-
-                            DispatchQueue.main.async {
-                                if let windowScene = UIApplication.shared.connectedScenes.first as? UIWindowScene,
-                                   let window = windowScene.windows.first {
-                                    withAnimation {
-                                        window.rootViewController = UIHostingController(rootView: ChatsView())
-                                        window.makeKeyAndVisible()
-                                    }
-                                }
-                            }
+                            routinViewModel.navigateToScreen(.chats)
                         } else if let error = viewModel.errorMessage {
                             errorMessage = error
                             showError = true
