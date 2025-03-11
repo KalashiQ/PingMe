@@ -52,13 +52,13 @@ struct VerificationView: View {
                 }
                 .padding(.leading, 21)
 
-                Text("Подтверждение")
+                Text("Confirmation")
                     .font(.custom("Inter", size: 40))
                     .fontWeight(.medium)
                     .lineSpacing(62.93)
                     .padding(.leading, 21)
 
-                Text("Код отправлен на \(viewModel.email)")
+                Text(String(format: NSLocalizedString("The code has been sent to %@", comment: ""), viewModel.email))
                     .foregroundColor(.gray)
                     .padding(.leading, 21)
                     .padding(.top, 8)
@@ -98,7 +98,7 @@ struct VerificationView: View {
                         }
                     }
                 }) {
-                    Text("Подтвердить")
+                    Text("Confirm")
                         .foregroundColor(.white)
                         .frame(maxWidth: .infinity)
                         .frame(height: 52)
@@ -116,8 +116,8 @@ struct VerificationView: View {
                 Button(action: viewModel.resendCode) {
                     Text(
                         viewModel.canResendCode
-                            ? "Отправить код повторно"
-                            : "Отправить повторно через \(viewModel.formattedTime)"
+                            ? "Send the code again"
+                            : String(format: NSLocalizedString("Send again in %@", comment: ""), viewModel.formattedTime)
                     )
                     .foregroundColor(viewModel.canResendCode ? .black : .gray)
                 }

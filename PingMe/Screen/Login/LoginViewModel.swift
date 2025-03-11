@@ -39,12 +39,12 @@ class LoginViewModel {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         isValidEmail = emailPredicate.evaluate(with: email)
-        emailErrorMessage = isValidEmail ? "" : "Неверный формат email"
+        emailErrorMessage = isValidEmail ? "" : "Invalid email format"
     }
 
     func validatePassword() {
         isValidPassword = password.count >= 8
-        passwordErrorMessage = isValidPassword ? "" : "Пароль должен содержать минимум 8 символов"
+        passwordErrorMessage = isValidPassword ? "" : "The password must contain at least 8 characters."
     }
 
     // MARK: - Authentication Methods
@@ -63,7 +63,7 @@ class LoginViewModel {
         } catch {
             errorMessage = error.localizedDescription
             showAlert = true
-            alertMessage = "Неверный email или пароль"
+            alertMessage = "Invalid email or password"
         }
     }
 }

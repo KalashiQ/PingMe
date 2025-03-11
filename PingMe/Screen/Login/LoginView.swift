@@ -15,7 +15,7 @@ struct LoginView: View {
 
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: 16) {
-                    Text("Войти")
+                    Text("Enter")
                         .font(.custom("Inter", size: 52))
                         .fontWeight(.medium)
                         .lineSpacing(62.93)
@@ -23,7 +23,7 @@ struct LoginView: View {
 
                     VStack(alignment: .center, spacing: 14) {
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("e-mail:")
+                            Text("E-mail:")
                                 .font(.custom("Inter", size: 21))
                                 .fontWeight(.regular)
                                 .foregroundColor(Color(hex: "#525252"))
@@ -56,7 +56,7 @@ struct LoginView: View {
                         }
 
                         VStack(alignment: .leading, spacing: 0) {
-                            Text("пароль:")
+                            Text("Password")
                                 .font(.custom("Inter", size: 21))
                                 .fontWeight(.regular)
                                 .foregroundColor(Color(hex: "#525252"))
@@ -111,7 +111,7 @@ struct LoginView: View {
                         viewModel.showGoogleAlert = true
                     }) {
                         HStack {
-                            Text("Вход через Google")
+                            Text("Log in via Google")
                                 .foregroundColor(Color(hex: "#525252"))
                             Image("Google")
                                 .resizable()
@@ -135,7 +135,7 @@ struct LoginView: View {
                     Button(action: {
                         handleRegistrationButton()
                     }) {
-                        Text("Зарегистрироваться")
+                        Text("Register")
                             .foregroundColor(Color(hex: "#525252"))
                             .frame(width: 261, height: 52)
                             .background(Color.white)

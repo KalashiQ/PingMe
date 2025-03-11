@@ -77,7 +77,7 @@ class VerificationViewModel {
         let code = verificationCode.joined()
 
         if code.count != 6 {
-            errorMessage = "Код должен состоять из 6 цифр"
+            errorMessage = "The code must consist of 6 digits."
             return nil
         }
 
@@ -87,7 +87,7 @@ class VerificationViewModel {
                 : authService.verifyRegistration(email: email, password: password, token: code)
 
             if !response.success {
-                errorMessage = "Неверный код подтверждения"
+                errorMessage = "Invalid confirmation code"
                 clearVerificationCode()
                 return nil
             }
@@ -100,7 +100,7 @@ class VerificationViewModel {
             return userData
 
         } catch {
-            errorMessage = "Неверный код подтверждения"
+            errorMessage = "Invalid confirmation code"
             clearVerificationCode()
             return nil
         }
