@@ -18,10 +18,11 @@ class VerificationViewModel {
     var errorMessage: String?
 
     // MARK: - Initialization
-    init(email: String, password: String, isFromLogin: Bool) {
+    init(email: String, password: String, isFromLogin: Bool, username: String = "") {
         self.email = email
         self.password = password
         self.isFromLogin = isFromLogin
+        self.username = username
     }
 
     // MARK: - Timer Management
@@ -82,7 +83,8 @@ class VerificationViewModel {
         }
 
         do {
-            let response = try await isFromLogin
+            let response =
+                try await isFromLogin
                 ? authService.verifyLogin(email: email, password: password, token: code)
                 : authService.verifyRegistration(email: email, password: password, token: code)
 
@@ -126,7 +128,24 @@ class VerificationViewModel {
     // MARK: - Code Resend
     func resendCode() {
         if canResendCode {
-            startTimer()
+            Task {
+                do {
+                    let response =
+                        try await isFromLogin
+                        ? authService.login(email: email, password: password)
+                        : authService.register(email: email, password: password, name: username)
+
+                    if response.success {
+                        await MainActor.run {
+                            startTimer()
+                        }
+                    } else {
+                        errorMessage = response.error ?? "Failed to resend code"
+                    }
+                } catch {
+                    errorMessage = "Failed to resend code"
+                }
+            }
         }
     }
 

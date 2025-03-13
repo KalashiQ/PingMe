@@ -1,9 +1,12 @@
+import Foundation
+
 extension String {
     func localized(_ args: CVarArg...) -> String {
-        String(format: "\(self)", arguments: args)
+        let localizedFormat = NSLocalizedString(self, comment: "")
+        return String(format: localizedFormat, arguments: args)
     }
 
     var localized: String {
-        String(localized: "\(self)")
+        NSLocalizedString(self, comment: "")
     }
 }

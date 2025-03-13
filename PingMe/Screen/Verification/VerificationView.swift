@@ -23,11 +23,15 @@ struct VerificationView: View {
         backgroundHeight: Binding<CGFloat>,
         backgroundWidth: Binding<CGFloat>,
         isAnimating: Binding<Bool>,
-        onBack: @escaping () -> Void
+        onBack: @escaping () -> Void,
+        username: String = ""
     ) {
         _viewModel = State(
             initialValue: VerificationViewModel(
-                email: email, password: password, isFromLogin: isFromLogin))
+                email: email,
+                password: password,
+                isFromLogin: isFromLogin,
+                username: username))
         _contentOpacity = contentOpacity
         _backgroundHeight = backgroundHeight
         _backgroundWidth = backgroundWidth
@@ -58,10 +62,10 @@ struct VerificationView: View {
                     .lineSpacing(62.93)
                     .padding(.leading, 21)
 
-                Text(String(format: NSLocalizedString("The code has been sent to %@", comment: ""), viewModel.email))
-                    .foregroundColor(.gray)
-                    .padding(.leading, 21)
-                    .padding(.top, 8)
+                Text("The code has been sent to %@".localized(viewModel.email))
+                .foregroundColor(.gray)
+                .padding(.leading, 21)
+                .padding(.top, 8)
 
                 HStack(spacing: 12) {
                     ForEach(0..<6) { index in
@@ -113,11 +117,19 @@ struct VerificationView: View {
                     Text(errorMessage)
                 }
 
-                Button(action: viewModel.resendCode) {
+                Button(action: {
+                    Task {
+                        viewModel.resendCode()
+                        if let error = viewModel.errorMessage {
+                            errorMessage = error
+                            showError = true
+                        }
+                    }
+                }) {
                     Text(
                         viewModel.canResendCode
-                            ? "Send the code again"
-                            : String(format: NSLocalizedString("Send again in %@", comment: ""), viewModel.formattedTime)
+                            ? "Send the code again".localized
+                            : "Send again in %@".localized(viewModel.formattedTime)
                     )
                     .foregroundColor(viewModel.canResendCode ? .black : .gray)
                 }

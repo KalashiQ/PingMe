@@ -56,6 +56,17 @@
         }
       }
     },
+    "Failed to resend code" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Не удалось повторно отправить код"
+          }
+        }
+      }
+    },
     "Invalid confirmation code" : {
       "extractionState" : "manual",
       "localizations" : {
