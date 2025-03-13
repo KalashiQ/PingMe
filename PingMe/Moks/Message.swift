@@ -5,4 +5,4 @@ struct Message: Identifiable {
     let content: String
     let timestamp: Date
     let isFromCurrentUser: Bool
-} 
+}

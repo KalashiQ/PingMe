@@ -9,16 +9,17 @@ struct SplashView: View {
     @State private var logoOpacity = 0.0
     @State private var taglineOffset = 20.0
     @State private var taglineOpacity = 0.0
-    
+    @Environment(\.routingViewModel) private var routingViewModel
     var body: some View {
         ZStack {
             if !isActive {
+
                 Image("background")
                     .resizable()
                     .aspectRatio(contentMode: .fill)
                     .edgesIgnoringSafeArea(.all)
                     .opacity(backgroundOpacity)
-                
+
                 VStack(spacing: 20) {
                     Image("Notifications")
                         .resizable()
@@ -26,14 +27,14 @@ struct SplashView: View {
                         .frame(width: 140)
                         .scaleEffect(bellsScale)
                         .opacity(bellsOpacity)
-                    
+
                     Image("PingMe")
                         .resizable()
                         .scaledToFit()
                         .frame(width: 220)
                         .scaleEffect(logoScale)
                         .opacity(logoOpacity)
-                    
+
                     Image("StayConnected")
                         .resizable()
                         .scaledToFit()
@@ -43,26 +44,22 @@ struct SplashView: View {
                 }
                 .offset(y: -50)
             }
-            
-            if isActive {
-                LoginView()
-            }
         }
         .onAppear {
             withAnimation(.easeOut(duration: 0.5)) {
                 backgroundOpacity = 1.0
             }
-            
+
             withAnimation(.spring(response: 0.6, dampingFraction: 0.6).delay(0.3)) {
                 bellsScale = 1.0
                 bellsOpacity = 1.0
             }
-            
+
             withAnimation(.spring(response: 0.6, dampingFraction: 0.6).delay(0.5)) {
                 logoScale = 1.0
                 logoOpacity = 1.0
             }
-            
+
             withAnimation(.spring(response: 0.6, dampingFraction: 0.6).delay(0.7)) {
                 taglineOffset = 0
                 taglineOpacity = 1.0
@@ -75,6 +72,7 @@ struct SplashView: View {
                     bellsOpacity = 0
                     logoOpacity = 0
                     taglineOpacity = 0
+                    routingViewModel.navigateToScreen(.login)
                 }
             }
         }
@@ -84,4 +82,3 @@ struct SplashView: View {
 #Preview {
     SplashView()
 }
-

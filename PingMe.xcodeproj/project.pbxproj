@@ -24,9 +24,10 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		A1387DA22D717BF30000A743 /* PingMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1387DA32D717BF30000A743 /* PingMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		A1387DA42D717BF30000A743 /* PingMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10A49FA2D7628B600700A95 /* PingMe.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = PingMe.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10A49FB2D7628B600700A95 /* PingMeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A10A49FC2D7628B600700A95 /* PingMeUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = PingMeUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		A18AC1632D763E180070BE68 /* .swiftlint.yml */ = {isa = PBXFileReference; lastKnownFileType = text.yaml; path = .swiftlint.yml; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedRootGroup section */
@@ -75,12 +76,13 @@
 		A1D2C1182D574C89002E22C4 = {
 			isa = PBXGroup;
 			children = (
+				A18AC1632D763E180070BE68 /* .swiftlint.yml */,
 				A1D2C1232D574C89002E22C4 /* PingMe */,
 				A1D2C1342D574C8A002E22C4 /* PingMeTests */,
 				A1D2C13E2D574C8A002E22C4 /* PingMeUITests */,
-				A1387DA22D717BF30000A743 /* PingMe.app */,
-				A1387DA32D717BF30000A743 /* PingMeTests.xctest */,
-				A1387DA42D717BF30000A743 /* PingMeUITests.xctest */,
+				A10A49FA2D7628B600700A95 /* PingMe.app */,
+				A10A49FB2D7628B600700A95 /* PingMeTests.xctest */,
+				A10A49FC2D7628B600700A95 /* PingMeUITests.xctest */,
 			);
 			sourceTree = "<group>";
 		};
@@ -98,6 +100,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				A18AC1612D763BEE0070BE68 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				A1D2C1232D574C89002E22C4 /* PingMe */,
@@ -106,7 +109,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMe;
-			productReference = A1387DA22D717BF30000A743 /* PingMe.app */;
+			productReference = A10A49FA2D7628B600700A95 /* PingMe.app */;
 			productType = "com.apple.product-type.application";
 		};
 		A1D2C1302D574C8A002E22C4 /* PingMeTests */ = {
@@ -129,7 +132,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMeTests;
-			productReference = A1387DA32D717BF30000A743 /* PingMeTests.xctest */;
+			productReference = A10A49FB2D7628B600700A95 /* PingMeTests.xctest */;
 			productType = "com.apple.product-type.bundle.unit-test";
 		};
 		A1D2C13A2D574C8A002E22C4 /* PingMeUITests */ = {
@@ -152,7 +155,7 @@
 			packageProductDependencies = (
 			);
 			productName = PingMeUITests;
-			productReference = A1387DA42D717BF30000A743 /* PingMeUITests.xctest */;
+			productReference = A10A49FC2D7628B600700A95 /* PingMeUITests.xctest */;
 			productType = "com.apple.product-type.bundle.ui-testing";
 		};
 /* End PBXNativeTarget section */
@@ -184,9 +187,14 @@
 			knownRegions = (
 				en,
 				Base,
+				ru,
 			);
 			mainGroup = A1D2C1182D574C89002E22C4;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				A18AC1132D76363E0070BE68 /* XCRemoteSwiftPackageReference "SwiftLint" */,
+				A116C89F2D7ADABB00F25995 /* XCRemoteSwiftPackageReference "keychain-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = A1D2C1182D574C89002E22C4;
 			projectDirPath = "";
@@ -248,6 +256,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		A18AC1612D763BEE0070BE68 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = A18AC1602D763BEE0070BE68 /* SwiftLintBuildToolPlugin */;
+		};
 		A1D2C1332D574C8A002E22C4 /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = A1D2C1202D574C89002E22C4 /* PingMe */;
@@ -320,6 +332,7 @@
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_ACTIVE_COMPILATION_CONDITIONS = "DEBUG $(inherited)";
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 			};
 			name = Debug;
@@ -376,6 +389,7 @@
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
 				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_EMIT_LOC_STRINGS = YES;
 				VALIDATE_PRODUCT = YES;
 			};
 			name = Release;
@@ -548,6 +562,33 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		A116C89F2D7ADABB00F25995 /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
+		A18AC1132D76363E0070BE68 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.58.2;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		A18AC1602D763BEE0070BE68 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = A18AC1132D76363E0070BE68 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = A1D2C1192D574C89002E22C4 /* Project object */;
 }
