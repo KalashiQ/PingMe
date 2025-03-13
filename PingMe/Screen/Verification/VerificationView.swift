@@ -62,11 +62,7 @@ struct VerificationView: View {
                     .lineSpacing(62.93)
                     .padding(.leading, 21)
 
-                Text(
-                    String(
-                        format: NSLocalizedString("The code has been sent to %@", comment: ""),
-                        viewModel.email)
-                )
+                Text("The code has been sent to %@".localized(viewModel.email))
                 .foregroundColor(.gray)
                 .padding(.leading, 21)
                 .padding(.top, 8)
