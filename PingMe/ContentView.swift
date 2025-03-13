@@ -3,7 +3,7 @@ import SwiftUI
 struct ContentView: View {
     @Environment(\.routingViewModel) private var routingViewModel
     var body: some View {
-            switch routinViewModel.currentScreen {
+            switch routingViewModel.currentScreen {
             case .splash:
                 SplashView()
             case .login:

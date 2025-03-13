@@ -32,7 +32,8 @@ struct RegistrationView: View {
                         withAnimation(.spring()) {
                             viewModel.showVerification = false
                         }
-                    }
+                    },
+                    username: viewModel.username.replacingOccurrences(of: "@", with: "")
                 )
                 .transition(.move(edge: .trailing))
             } else {

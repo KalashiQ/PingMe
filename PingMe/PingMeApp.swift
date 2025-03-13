@@ -2,11 +2,11 @@ import SwiftUI
 
 @main
 struct PingMeApp: App {
-    @State private var routinViewModel = RoutinViewModel()
+    @State private var routingViewModel = RoutingViewModel()
     var body: some Scene {
         WindowGroup {
             ContentView()
-                .environment(\.routinViewModel, routinViewModel)
+                .environment(\.routingViewModel, routingViewModel)
         }
     }
 }
