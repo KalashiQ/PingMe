@@ -11,7 +11,7 @@ struct VerificationView: View {
     @FocusState private var focusedField: Int?
     @State private var showError = false
     @State private var errorMessage = ""
-    @Environment(\.routinViewModel) private var routinViewModel
+    @Environment(\.routingViewModel) private var routingViewModel
     private let password: String
 
     // MARK: - Initialization
@@ -91,7 +91,7 @@ struct VerificationView: View {
                     Task {
                         if let userData = await viewModel.verifyCode() {
                             viewModel.saveUserData(userData)
-                            routinViewModel.navigateToScreen(.chats)
+                            routingViewModel.navigateToScreen(.chats)
                         } else if let error = viewModel.errorMessage {
                             errorMessage = error
                             showError = true

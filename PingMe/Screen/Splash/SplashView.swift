@@ -9,7 +9,7 @@ struct SplashView: View {
     @State private var logoOpacity = 0.0
     @State private var taglineOffset = 20.0
     @State private var taglineOpacity = 0.0
-    @Environment(\.routinViewModel) private var routinViewModel
+    @Environment(\.routingViewModel) private var routingViewModel
     var body: some View {
         ZStack {
             if !isActive {
@@ -72,7 +72,7 @@ struct SplashView: View {
                     bellsOpacity = 0
                     logoOpacity = 0
                     taglineOpacity = 0
-                    routinViewModel.navigateToScreen(.login)
+                    routingViewModel.navigateToScreen(.login)
                 }
             }
         }

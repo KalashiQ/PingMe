@@ -1,7 +1,7 @@
 import SwiftUI
 
 struct ContentView: View {
-    @Environment(\.routinViewModel) private var routinViewModel
+    @Environment(\.routingViewModel) private var routingViewModel
     var body: some View {
             switch routinViewModel.currentScreen {
             case .splash:
