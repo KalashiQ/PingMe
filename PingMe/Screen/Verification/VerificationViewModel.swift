@@ -7,7 +7,7 @@ import Observation
 class VerificationViewModel {
     private let authService = AuthService()
     var verificationCode: [String] = Array(repeating: "", count: 6)
-    var timeRemaining = 3
+    var timeRemaining = 180
     var timer: Timer?
     var canResendCode = false
     var email: String
@@ -28,7 +28,7 @@ class VerificationViewModel {
     // MARK: - Timer Management
     func startTimer() {
         canResendCode = false
-        timeRemaining = 3
+        timeRemaining = 180
         timer?.invalidate()
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { [weak self] _ in
             guard let self = self else { return }
