@@ -13,6 +13,7 @@ struct VerificationView: View {
     @State private var errorMessage = ""
     @Environment(\.routingViewModel) private var routingViewModel
     private let password: String
+    @State private var isLoading = false
 
     // MARK: - Initialization
     init(
@@ -93,6 +94,7 @@ struct VerificationView: View {
 
                 Button(action: {
                     Task {
+                        isLoading = true
                         if let userData = await viewModel.verifyCode() {
                             viewModel.saveUserData(userData)
                             routingViewModel.navigateToScreen(.chats)
@@ -100,6 +102,7 @@ struct VerificationView: View {
                             errorMessage = error
                             showError = true
                         }
+                        isLoading = false
                     }
                 }) {
                     Text("Confirm")
@@ -139,6 +142,10 @@ struct VerificationView: View {
             }
             .frame(maxWidth: .infinity, maxHeight: .infinity)
             .background(Color(hex: "#CADDAD"))
+
+            if isLoading {
+                LoadingView()
+            }
         }
         .onAppear {
             viewModel.startTimer()

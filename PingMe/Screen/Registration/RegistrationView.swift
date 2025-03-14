@@ -14,6 +14,7 @@ struct RegistrationView: View {
     @Binding var backgroundHeight: CGFloat
     @Binding var backgroundWidth: CGFloat
     @Binding var isAnimating: Bool
+    @State private var isLoading = false
 
     var body: some View {
         ZStack {
@@ -183,7 +184,9 @@ struct RegistrationView: View {
                             Button(action: {
                                 if viewModel.isValidForm() {
                                     Task {
+                                        isLoading = true
                                         await viewModel.register()
+                                        isLoading = false
                                     }
                                 }
                             }) {
@@ -226,6 +229,10 @@ struct RegistrationView: View {
                     .padding()
                 }
                 .frame(maxWidth: .infinity, minHeight: UIScreen.main.bounds.height, alignment: .top)
+            }
+
+            if isLoading {
+                LoadingView()
             }
         }
         .animation(.spring(), value: viewModel.showVerification)
