@@ -154,13 +154,14 @@ struct LoginView: View {
             }
             .frame(width: 400, height: 745, alignment: .top)
             .opacity(viewModel.contentOpacity)
+        }
 
+        .padding(.top, 153)
+        .overlay {
             if isLoading {
                 LoadingView()
             }
-        }
-        .padding(.top, 153)
-        .overlay {
+
             if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
