@@ -126,25 +126,23 @@ class VerificationViewModel {
     }
 
     // MARK: - Code Resend
-    func resendCode() {
+    func resendCode() async {
         if canResendCode {
-            Task {
-                do {
-                    let response =
-                        try await isFromLogin
-                        ? authService.login(email: email, password: password)
-                        : authService.register(email: email, password: password, name: username)
+            do {
+                let response =
+                    try await isFromLogin
+                    ? authService.login(email: email, password: password)
+                    : authService.register(email: email, password: password, name: username)
 
-                    if response.success {
-                        await MainActor.run {
-                            startTimer()
-                        }
-                    } else {
-                        errorMessage = response.error ?? "Failed to resend code"
+                if response.success {
+                    await MainActor.run {
+                        startTimer()
                     }
-                } catch {
-                    errorMessage = "Failed to resend code"
+                } else {
+                    errorMessage = response.error ?? "Failed to resend code"
                 }
+            } catch {
+                errorMessage = "Failed to resend code"
             }
         }
     }
