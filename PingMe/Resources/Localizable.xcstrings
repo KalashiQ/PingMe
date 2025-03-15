@@ -199,6 +199,17 @@
         }
       }
     },
+    "Successful response without user data" : {
+      "extractionState" : "manual",
+      "localizations" : {
+        "ru" : {
+          "stringUnit" : {
+            "state" : "translated",
+            "value" : "Успешный ответ без данных пользователя"
+          }
+        }
+      }
+    },
     "The code has been sent to %@" : {
       "extractionState" : "manual",
       "localizations" : {

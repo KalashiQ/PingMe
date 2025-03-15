@@ -7,11 +7,13 @@ struct LoginView: View {
         password: "Password#123",
         isFromLogin: true
     )
+    @State private var isLoading = false
     var body: some View {
         ZStack {
-            BackgroundView(height: viewModel.backgroundHeight, width: viewModel.backgroundWidth)
+            BackgroundView(height: viewModel.backgroundHeight)
                 .animation(.easeInOut(duration: 1.1), value: viewModel.backgroundHeight)
                 .animation(.easeInOut(duration: 1.1), value: viewModel.backgroundWidth)
+                .ignoresSafeArea()
 
             VStack(alignment: .leading) {
                 VStack(alignment: .leading, spacing: 16) {
@@ -154,8 +156,14 @@ struct LoginView: View {
             .frame(width: 400, height: 745, alignment: .top)
             .opacity(viewModel.contentOpacity)
         }
+
+        .ignoresSafeArea()
         .padding(.top, 153)
         .overlay {
+            if isLoading {
+                LoadingView()
+            }
+
             if viewModel.isAnimatingLogin {
                 VerificationView(
                     email: viewModel.email,
@@ -218,8 +226,10 @@ struct LoginView: View {
         viewModel.validatePassword()
 
         if viewModel.isValidEmail && viewModel.isValidPassword {
+            isLoading = true
             Task {
                 await viewModel.login()
+                isLoading = false
                 guard viewModel.errorMessage == nil && !viewModel.showAlert else { return }
                 startTransitionAnimation(for: true)
             }
