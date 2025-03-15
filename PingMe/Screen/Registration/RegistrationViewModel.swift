@@ -44,22 +44,22 @@ class RegistrationViewModel {
         let usernameRegex = "^@[A-Za-z][A-Za-z0-9]{5,}$"
         let usernamePredicate = NSPredicate(format: "SELF MATCHES %@", usernameRegex)
         isValidUsername = usernamePredicate.evaluate(with: username)
-        usernameErrorMessage = isValidUsername ? "" : "Use '@' and a minimum of 6 characters."
+        usernameErrorMessage = isValidUsername ? "" : "Use '@' and a minimum of 6 characters.".localized
     }
     func validateEmail() {
         let emailRegex = "[A-Z0-9a-z._%+-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,64}"
         let emailPredicate = NSPredicate(format: "SELF MATCHES %@", emailRegex)
         isValidEmail = emailPredicate.evaluate(with: email)
-        emailErrorMessage = isValidEmail ? "" : "Invalid email format"
+        emailErrorMessage = isValidEmail ? "" : "Invalid email format".localized
     }
     func validatePassword() {
         isValidPassword = password.count >= 8
-        passwordErrorMessage = isValidPassword ? "" : "The password must contain at least 8 characters."
+        passwordErrorMessage = isValidPassword ? "" : "The password must contain at least 8 characters.".localized
     }
     func validatePasswordMatch() {
         isValidPasswordMatch =
             !password.isEmpty && !confirmPassword.isEmpty && password == confirmPassword
-        confirmPasswordErrorMessage = isValidPasswordMatch ? "" : "Passwords must match"
+        confirmPasswordErrorMessage = isValidPasswordMatch ? "" : "Passwords must match".localized
     }
     func isValidForm() -> Bool {
         isValidEmail && isValidPassword && isValidPasswordMatch && isValidUsername && !email.isEmpty
@@ -77,7 +77,7 @@ class RegistrationViewModel {
             )
 
             if !response.success {
-                errorMessage = response.error ?? "Registration failed"
+                errorMessage = response.error ?? "Registration failed".localized
                 return
             }
 
@@ -102,7 +102,7 @@ class RegistrationViewModel {
             )
 
             if !response.success {
-                errorMessage = response.error ?? "Verification failed"
+                errorMessage = response.error ?? "Verification failed".localized
                 return nil
             }
 
