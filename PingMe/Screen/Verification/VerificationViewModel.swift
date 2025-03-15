@@ -78,7 +78,7 @@ class VerificationViewModel {
         let code = verificationCode.joined()
 
         if code.count != 6 {
-            errorMessage = "The code must consist of 6 digits."
+            errorMessage = "The code must consist of 6 digits.".localized
             return nil
         }
 
@@ -89,20 +89,20 @@ class VerificationViewModel {
                 : authService.verifyRegistration(email: email, password: password, token: code)
 
             if !response.success {
-                errorMessage = "Invalid confirmation code"
+                errorMessage = "Invalid confirmation code".localized
                 clearVerificationCode()
                 return nil
             }
 
             guard let userData = response.data else {
-                errorMessage = "Успешный ответ без данных пользователя"
+                errorMessage = "Successful response without user data".localized
                 return nil
             }
 
             return userData
 
         } catch {
-            errorMessage = "Invalid confirmation code"
+            errorMessage = "Invalid confirmation code".localized
             clearVerificationCode()
             return nil
         }
@@ -139,10 +139,10 @@ class VerificationViewModel {
                         startTimer()
                     }
                 } else {
-                    errorMessage = response.error ?? "Failed to resend code"
+                    errorMessage = response.error ?? "Failed to resend code".localized
                 }
             } catch {
-                errorMessage = "Failed to resend code"
+                errorMessage = "Failed to resend code".localized
             }
         }
     }
